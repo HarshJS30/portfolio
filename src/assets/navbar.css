@@ -1,0 +1,597 @@
+.navbar button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    font-size: 18px;
+}
+.navbar img{
+    width: 50px;
+    height: 50px;
+}
+.navbar{
+    width: 60%;
+    position: relative;
+    left: 20%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.about{
+    height: 85vh;
+    display: flex;
+    width: 60%;
+    left: 20%;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.text h2{
+    background-color: transparent;
+    font-size: 65px;
+    font-weight: 800;
+}
+.text span{
+    background-color: transparent;
+    font-family: "Instrument Serif",sans-serif;
+    font-weight: 400;
+    position: relative;
+    left: 5px;
+    color: #00adb5;
+    font-style: italic;
+}
+.text {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.cta button{
+    background: none;
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    width: 170px;
+    font-size: 17px;
+    padding: 7px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0, 173, 181, 0.7);
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+.tools{
+    width: 60%;
+    position: relative;
+    top: -20px;
+    left: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.tools h2{
+    text-decoration: underline wavy #00ADB5;
+    text-decoration-thickness: 2px;
+    font-size: 40px;
+}
+.tools span{
+    font-weight: 400;
+    font-style: italic;
+    font-family: 'Instrument Serif',sans-serif;
+    text-decoration: none !important;
+    text-decoration-thickness: 0px;
+    color: #00ADB5;
+}
+.tool{
+    display: flex;
+    flex-direction: row;
+    border-radius: 15px;
+    padding: 3px;
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.tool i, .tool p{
+    background-color: transparent;
+}
+.mar2{
+    position: relative;
+    top: -50px;
+}
+.projects{
+    width: 60%;
+    position: relative;
+    top: -60px;
+    left: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.projects h2{
+    font-size: 40px;
+    text-decoration: underline wavy #00ADB5;
+    text-decoration-thickness: 2px;
+}
+.projects span{
+    font-weight: 400;
+    font-style: italic;
+    font-family: 'Instrument Serif',sans-serif;
+    color: #00ADB5;
+    position: relative;
+    left: -5px;
+}
+.project{
+    width: 100%;
+    height: 60vh;
+    display: flex;
+}
+.pro{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+}
+.pro img{
+    width: 95%;
+    height: 55%;
+}
+.pro h4{
+    font-size: 20px;
+}
+.pro p{
+    font-size: 14px;
+    color: #a1a1aa;
+}
+.links svg{
+    position: relative;
+    top: 10px;
+}
+.links a{
+    position: relative;
+    left: -12px;
+    color: #00ADB5;
+    text-decoration: underline wavy #00ADB5;
+    text-decoration-thickness: 1px;
+}
+.contact{
+    width: 60%;
+    height: 50vh;
+    position: relative;
+    left: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.connect , .form{
+    width: 50%;
+    height: 90%;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.input-field{
+    width: 100%;
+    border: 1px solid #a1a1aa;
+    padding: 7px;
+    border-radius: 7px;
+}
+.form button{
+    background-color: #fff;
+    color: #000;
+    width: 106%;
+    padding: 7px;
+    border: 1px solid #a1a1aa;
+    border-radius: 7px;
+}
+.connect h4{
+    font-size: 25px;
+    text-decoration: underline wavy #00ADB5;
+    text-decoration-thickness: 1.5px;
+}
+.connect p{
+    color: #a1a1aa;
+}
+.icon{
+    font-size: 20px;
+    border: 1px solid #a1a1aa;
+    padding: 5px;
+    border-radius: 5px;
+    position: relative;
+    left: -8px;
+    transition: all 0.3s;
+}
+.git-icon:hover{
+    background-color: #6e5494;;
+}
+.twitter-icon:hover{
+    background-color: #1da1f2;
+}
+.mail-icon:hover{
+    background-color: #ea4335;
+}
+.insta-icon:hover{
+    background-color: #e1306c;
+}
+u.custom-underline {
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+}
+
+u.custom-underline .underline-svg {
+  position: absolute;
+  bottom: -19px;
+  left: -15px;
+  width: calc(100% + 12px);
+  height: 12px;
+  filter: drop-shadow(0 0 1px rgba(0,0,0,0.3)); /* Adds visibility on light backgrounds */
+}
+
+u.custom-underline .underline-svg path {
+  animation: draw 2s ease-out forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.home{
+    color: #00ADB5;
+}
+@media screen and (max-width: 768px) {
+    .navbar {
+        width: 90%;
+        left: 5%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+    .navbar button {
+        font-size: 16px;
+    }
+    .navbar img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.about{
+    height: 85vh;
+    display: flex;
+    width: 60%;
+    left: 20%;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsive About Section */
+@media screen and (max-width: 768px) {
+    .about {
+        width: 90%;
+        left: 5%;
+        height: auto;
+        padding: 20px 0;
+    }
+    .text h2 {
+        font-size: 40px;
+        text-align: center;
+    }
+    .text span {
+        left: 0;
+        text-align: center;
+    }
+}
+
+.text h2{
+    background-color: transparent;
+    font-size: 65px;
+    font-weight: 800;
+}
+.text span{
+    background-color: transparent;
+    font-family: "Instrument Serif",sans-serif;
+    font-weight: 400;
+    position: relative;
+    left: 5px;
+    color: #00adb5;
+    font-style: italic;
+}
+.text {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.cta button{
+    background: none;
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    width: 170px;
+    font-size: 17px;
+    padding: 7px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0, 173, 181, 0.7);
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Responsive CTA Button */
+@media screen and (max-width: 768px) {
+    .cta button {
+        width: 150px;
+        font-size: 15px;
+    }
+}
+
+.tools{
+    width: 60%;
+    position: relative;
+    top: -20px;
+    left: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Responsive Tools Section */
+@media screen and (max-width: 768px) {
+    .tools {
+        width: 90%;
+        left: 5%;
+        top: 0;
+    }
+    .tools h2 {
+        font-size: 30px;
+    }
+}
+
+.tools h2{
+    text-decoration: underline wavy #00ADB5;
+    text-decoration-thickness: 2px;
+    font-size: 40px;
+}
+.tools span{
+    font-weight: 400;
+    font-style: italic;
+    font-family: 'Instrument Serif',sans-serif;
+    text-decoration: none !important;
+    text-decoration-thickness: 0px;
+    color: #00ADB5;
+}
+.tool{
+    display: flex;
+    flex-direction: row;
+    border-radius: 15px;
+    padding: 3px;
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.tool i, .tool p{
+    background-color: transparent;
+}
+.mar2{
+    position: relative;
+    top: -50px;
+}
+
+/* Responsive Projects Section */
+.projects{
+    width: 60%;
+    position: relative;
+    top: -60px;
+    left: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 768px) {
+    .projects {
+        width: 90%;
+        left: 5%;
+        top: 0;
+    }
+    .projects h2 {
+        font-size: 30px;
+    }
+    .project {
+        flex-direction: column;
+        height: auto;
+    }
+    .pro {
+        width: 100%;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .pro img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.projects h2{
+    font-size: 40px;
+    text-decoration: underline wavy #00ADB5;
+    text-decoration-thickness: 2px;
+}
+.projects span{
+    font-weight: 400;
+    font-style: italic;
+    font-family: 'Instrument Serif',sans-serif;
+    color: #00ADB5;
+    position: relative;
+    left: -5px;
+}
+.project{
+    width: 100%;
+    height: 60vh;
+    display: flex;
+}
+.pro{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+}
+.pro img{
+    width: 95%;
+    height: 55%;
+}
+.pro h4{
+    font-size: 20px;
+}
+.pro p{
+    font-size: 14px;
+    color: #a1a1aa;
+}
+.links svg{
+    position: relative;
+    top: 10px;
+}
+.links a{
+    position: relative;
+    left: -12px;
+    color: #00ADB5;
+    text-decoration: underline wavy #00ADB5;
+    text-decoration-thickness: 1px;
+}
+
+/* Responsive Contact Section */
+.contact{
+    width: 60%;
+    height: 50vh;
+    position: relative;
+    left: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+    .contact {
+        width: 90%;
+        left: 5%;
+        height: auto;
+        flex-direction: column;
+    }
+    .connect, .form {
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+}
+
+.connect , .form{
+    width: 50%;
+    height: 90%;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.input-field{
+    width: 100%;
+    border: 1px solid #a1a1aa;
+    padding: 7px;
+    border-radius: 7px;
+}
+.form button{
+    background-color: #fff;
+    color: #000;
+    width: 106%;
+    padding: 7px;
+    border: 1px solid #a1a1aa;
+    border-radius: 7px;
+}
+.connect h4{
+    font-size: 25px;
+    text-decoration: underline wavy #00ADB5;
+    text-decoration-thickness: 1.5px;
+}
+.connect p{
+    color: #a1a1aa;
+}
+.icon{
+    font-size: 20px;
+    border: 1px solid #a1a1aa;
+    padding: 5px;
+    border-radius: 5px;
+    position: relative;
+    left: -8px;
+    transition: all 0.3s;
+}
+.git-icon:hover{
+    background-color: #6e5494;;
+}
+.twitter-icon:hover{
+    background-color: #1da1f2;
+}
+.mail-icon:hover{
+    background-color: #ea4335;
+}
+.insta-icon:hover{
+    background-color: #e1306c;
+}
+u.custom-underline {
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+}
+
+u.custom-underline .underline-svg {
+  position: absolute;
+  bottom: -19px;
+  left: -15px;
+  width: calc(100% + 12px);
+  height: 12px;
+  filter: drop-shadow(0 0 1px rgba(0,0,0,0.3)); /* Adds visibility on light backgrounds */
+}
+
+u.custom-underline .underline-svg path {
+  animation: draw 2s ease-out forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.home{
+    color: #00ADB5;
+}
+
+/* General Responsive Adjustments */
+@media screen and (max-width: 480px) {
+    .text h2 {
+        font-size: 30px;
+    }
+    .projects h2, .tools h2 {
+        font-size: 25px;
+    }
+    .pro h4 {
+        font-size: 18px;
+    }
+    .pro p {
+        font-size: 12px;
+    }
+}
