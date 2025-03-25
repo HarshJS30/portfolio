@@ -43,10 +43,10 @@ export default function About() {
         variants={textVariants}
         transition={transition}
       >
-        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={()=>window.open("https://x.com/except1onn", "_blank", "noopener,noreferrer")}>
           Say Hi
         </motion.button>
-        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => window.location.href = "mailto:srivastavaharsh894@gmail.com"}>
           Collaborate?
         </motion.button>
       </motion.div>

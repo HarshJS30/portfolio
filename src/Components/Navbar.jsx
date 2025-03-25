@@ -9,7 +9,7 @@ export default function Navbar(){
                 <img src={logo}></img>
                 <div className="buttons">
                     <button className="home">Home</button>
-                    <button>Contact</button>
+                    <button onClick={()=>window.location.href = "mailto:srivastavaharsh894@gmail.com"}>Contact</button>
                 </div>
             </section>
         </>

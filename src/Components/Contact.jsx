@@ -1,15 +1,18 @@
-import React from "react";
-import '../assets/navbar.css';
+import React, { useState } from "react";
+import emailjs from '@emailjs/browser';
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
 import { CiMail } from "react-icons/ci";
+import '../assets/navbar.css';
 
 export default function Contact() {
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,8 +21,26 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData); 
-    alert(`Thanks for reaching out, ${formData.name}!`);
+    setIsSubmitting(true);
+
+    // Replace these with your EmailJS IDs
+    emailjs.send(
+      'service_pb94wph',   // EmailJS Service ID
+      'template_foisjm2',  // EmailJS Template ID
+      formData,
+      'ZaJtUhFqr4yuXPSBy'       // EmailJS User ID (Public Key)
+    )
+    .then((response) => {
+      setSubmitStatus("success");
+      setFormData({ name: "", email: "", message: "" });
+    })
+    .catch((error) => {
+      setSubmitStatus("error");
+      console.error("EmailJS error:", error);
+    })
+    .finally(() => {
+      setIsSubmitting(false);
+    });
   };
 
   return (
@@ -28,10 +49,10 @@ export default function Contact() {
         <h4>Get in Touch</h4>
         <p>Have questions? Reach out anytime or connect via socials.</p>
         <div className="icons">
-          <FaGithub className="icon git-icon" />
-          <FaInstagram className="icon insta-icon" />
-          <BsTwitterX className="icon twitter-icon" />
-          <CiMail className="icon mail-icon" />
+          <FaGithub className="icon git-icon" onClick={() => window.open("https://github.com/HarshJS30", "_blank")}/>
+          <FaInstagram className="icon insta-icon" onClick={() => window.open("https://www.instagram.com/notreallyy.harsh/", "_blank")}/>
+          <BsTwitterX className="icon twitter-icon" onClick={() => window.open("https://x.com/except1onn", "_blank")}/>
+          <CiMail className="icon mail-icon" onClick={() => window.location.href = "mailto:srivastavaharsh894@gmail.com"}/>
         </div>
       </div>
 
@@ -64,9 +85,20 @@ export default function Contact() {
             rows="5"
             required
           />
-          <button type="submit" className="submit-btn">
-            Send Message
+          <button 
+            type="submit" 
+            className="submit-btn"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Sending..." : "Send Message"}
           </button>
+
+          {submitStatus === "success" && (
+            <p className="success-message">Message sent successfully!</p>
+          )}
+          {submitStatus === "error" && (
+            <p className="error-message">Failed to send. Please try again.</p>
+          )}
         </form>
       </div>
     </section>
