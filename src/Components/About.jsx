@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import '../assets/navbar.css';
 import UnderlineSvg from "./Underlinesvg";
 
-// Animation settings
 const transition = { 
   duration: 1.3, 
   ease: [0.25, 0.1, 0.25, 1] 

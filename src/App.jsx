@@ -13,7 +13,7 @@ function App(){
             <About />
             <Tools />
             <Projects />
-            <Contact />
+            <Contact /> 
         </>
     )
 }

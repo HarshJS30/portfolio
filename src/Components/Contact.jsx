@@ -18,7 +18,7 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData); // Replace with your logic
+    console.log("Form submitted:", formData); 
     alert(`Thanks for reaching out, ${formData.name}!`);
   };
 
