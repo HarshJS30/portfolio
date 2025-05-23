@@ -5,6 +5,8 @@ import pr1 from '../assets/pr1.png';
 import pr2 from '../assets/pr2.png';
 import pr3 from '../assets/pr3.png';
 import pr4 from '../assets/pr4.png';
+import pr5 from '../assets/pr5.png';
+import pr6 from '../assets/pr6.png';
 
 export default function Projects(){
     return(
@@ -32,7 +34,7 @@ export default function Projects(){
             <div className="project">
                 <div className="pro">
                     <img src={pr3}></img>
-                    <h4>Blojeet</h4>
+                    <h4>Blogjeet</h4>
                     <p>Blogjeet is a blogging website that lets people create blogs after signing up/logging in or they can guest login and view the blogs posted out there.</p>
                     <div className="links">
                         <a href="https://blogjeet.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
@@ -46,6 +48,26 @@ export default function Projects(){
                     <div className="links">
                         <a href="https://codejeet-iehl.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
                         <a href="https://github.com/HarshJS30/codejeet"><FaExternalLinkAlt />GitHub</a>
+                    </div>
+                </div>
+            </div>
+            <div className="project">
+                <div className="pro">
+                    <img src={pr5}></img>
+                    <h4>OneDSA</h4>
+                    <p>OneDSA is a website that helps you sharpen your coding skills one day at a time with a curated list of 100 DSA questions. Get a new challenge every day, complete with tags and direct links to try it out.</p>
+                    <div className="links">
+                        <a href="https://onedsa.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
+                        <a href="https://github.com/HarshJS30/onedsa"><FaExternalLinkAlt />GitHub</a>
+                    </div>
+                </div>
+                <div className="pro">
+                    <img src={pr6}></img>
+                    <h4>Dump</h4>
+                    <p>It is a personal website to jot down everything I read and think about—raw, unfiltered, and personal. From ideas to summaries, it’s just me making sense of things in my own words.</p>
+                    <div className="links">
+                        <a href="https://dump-nine.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
+                        <a href="https://github.com/HarshJS30/dump"><FaExternalLinkAlt />GitHub</a>
                     </div>
                 </div>
             </div>

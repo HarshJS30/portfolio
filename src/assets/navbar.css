@@ -316,6 +316,7 @@ u.custom-underline .underline-svg path {
   }
   .contact{
     flex-direction: column;
+    top: 80px;
   }
 }
 /* Add to navbar.css */

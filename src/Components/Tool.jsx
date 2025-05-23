@@ -31,6 +31,14 @@ export default function Tools() {
                     <i class="devicon-python-plain colored"></i>
                     <p>React</p>
                 </div>
+                <div className="tool">
+                    <i class="devicon-nextjs-plain"></i>
+                    <p>NextJS</p>
+                </div>
+                <div className="tool">
+                    <i class="devicon-supabase-plain colored"></i>
+                    <p>Supabase</p>
+                </div>
             </Marquee>
             <Marquee pauseOnHover="true" direction="right" className="mar2" speed={30}>
                 <div className="tool">
@@ -54,7 +62,8 @@ export default function Tools() {
                     <p>Express.js</p>
                 </div>
                 <div className="tool">
-                    <p>Zod</p>
+                    <i class="devicon-prisma-original colored"></i>
+                    <p>Prisma</p>
                 </div>
                 <div className="tool">
                     <i class="devicon-git-plain colored"></i>
@@ -63,6 +72,10 @@ export default function Tools() {
                 <div className="tool">
                     <i class="devicon-vercel-original"></i>
                     <p>Vercel</p>
+                </div>
+                <div className="tool">
+                    <i class="devicon-postgresql-plain colored"></i>
+                    <p>PostgreSQL</p>
                 </div>
             </Marquee>
         </section>
