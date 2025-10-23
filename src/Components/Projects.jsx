@@ -34,11 +34,11 @@ export default function Projects(){
             <div className="project">
                 <div className="pro">
                     <img src={pr3}></img>
-                    <h4>Blogjeet</h4>
-                    <p>Blogjeet is a blogging website that lets people create blogs after signing up/logging in or they can guest login and view the blogs posted out there.</p>
+                    <h4>Anon</h4>
+                    <p>Anon lets you chat instantly without signing up. Create a room, share the code, and start conversations with anyone.</p>
                     <div className="links">
-                        <a href="https://blogjeet.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
-                        <a href="https://github.com/HarshJS30/blogjeet"><FaExternalLinkAlt />GitHub</a>
+                        <a href="https://anon-mu-one.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
+                        <a href="https://github.com/HarshJS30/anon"><FaExternalLinkAlt />GitHub</a>
                     </div>
                 </div>
                 <div className="pro">
