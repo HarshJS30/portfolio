@@ -77,6 +77,14 @@ export default function Tools() {
                     <i class="devicon-postgresql-plain colored"></i>
                     <p>PostgreSQL</p>
                 </div>
+                <div className="tool">
+                    <i class="devicon-postgresql-plain colored"></i>
+                    <p>PostgreSQL</p>
+                </div>
+                <div className="tool">        
+                    <i class="devicon-socketio-original"></i>
+                    <p>Socket.io</p>
+                </div>
             </Marquee>
         </section>
     );

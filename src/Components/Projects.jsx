@@ -7,6 +7,8 @@ import pr3 from '../assets/pr3.png';
 import pr4 from '../assets/pr4.png';
 import pr5 from '../assets/pr5.png';
 import pr6 from '../assets/pr6.png';
+import pr7 from '../assets/pr7.png';
+import pr8 from '../assets/pr8.png';
 
 export default function Projects(){
     return(
@@ -25,7 +27,7 @@ export default function Projects(){
                 <div className="pro">
                     <img src={pr2}></img>
                     <h4>Dobay</h4>
-                    <p>Revamped the frontend of an agency’s website with clean, user-friendly interfaces, improving visual appeal. Collaborated to align design with brand identity.</p>
+                    <p>Revamped the frontend of an agency’s website with clean interfaces, improving visual appeal. Collaborated to align design with brand identity.</p>
                     <div className="links">
                         <a href="https://dobay.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
                     </div>
@@ -42,12 +44,11 @@ export default function Projects(){
                     </div>
                 </div>
                 <div className="pro">
-                    <img src={pr4}></img>
-                    <h4>Codejeet</h4>
-                    <p>Codejeet is a website that helps you with currency exchange rates. It also has a quiz related to country's currency to make it more engaging.</p>
+                    <img src={pr7}></img>
+                    <h4>Dashboard</h4>
+                    <p>Dashboard is a government personnel management system that enables quick access to departmental staff information.</p>
                     <div className="links">
-                        <a href="https://codejeet-iehl.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
-                        <a href="https://github.com/HarshJS30/codejeet"><FaExternalLinkAlt />GitHub</a>
+                        <a href="https://dashboard-livid-two-18.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
                     </div>
                 </div>
             </div>
@@ -59,6 +60,26 @@ export default function Projects(){
                     <div className="links">
                         <a href="https://onedsa.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
                         <a href="https://github.com/HarshJS30/onedsa"><FaExternalLinkAlt />GitHub</a>
+                    </div>
+                </div>
+                <div className="pro">
+                    <img src={pr8}></img>
+                    <h4>Memory Drop</h4>
+                    <p>A frontend design for a self-messaging app that enables users to schedule messages to themselves. Currently demonstrates the UI/UX concept without backend functionality.</p>
+                    <div className="links">
+                        <a href="https://memory-drop.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
+                        <a href="https://github.com/HarshJS30/memoryDrop"><FaExternalLinkAlt />GitHub</a>
+                    </div>
+                </div>
+            </div>
+            <div className="project">
+                <div className="pro">
+                    <img src={pr4}></img>
+                    <h4>CodeJeet</h4>
+                    <p>Codejeet is a website that helps you with currency exchange rates. It also has a quiz related to country's currency to make it more engaging</p>
+                    <div className="links">
+                        <a href="https://codejeet-iehl.vercel.app/"><FaExternalLinkAlt />Live Preview</a>
+                        <a href="https://github.com/HarshJS30/codejeet"><FaExternalLinkAlt />GitHub</a>
                     </div>
                 </div>
                 <div className="pro">
