@@ -1,6 +1,52 @@
-*{
-    background-color: #09090b;
-    font-family: 'Inter',sans-serif;
-    color: #fff;
-    margin: 0.5rem;
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0a0a0a;
+  font-family: 'DM Sans', sans-serif;
+  color: #fff;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.portfolio {
+  width: 100%;
+  min-height: 100vh;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.portfolio__grid {
+  display: grid;
+  grid-template-columns: 300px 1fr 210px;
+  gap: 12px;
+  max-width: 1180px;
+  width: 100%;
+  align-items: start;
+}
+
+.portfolio__col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.portfolio__col--tech   { animation: fadeUp 0.5s ease both; }
+.portfolio__col--center { animation: fadeUp 0.5s ease both; animation-delay: 0.08s; }
+.portfolio__col--links  { animation: fadeUp 0.5s ease both; animation-delay: 0.16s; }
+
+@media (max-width: 900px) {
+  .portfolio__grid { grid-template-columns: 1fr; }
 }
