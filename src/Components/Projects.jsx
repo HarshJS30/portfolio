@@ -73,7 +73,7 @@ const PROJECTS = [
     image: img2,
     accent: "#34d399",
     github: "https://github.com/harshjs30",
-    live: null,
+    live: "https://anon-mu-one.vercel.app/",
     year: "2024",
     type: "Personal Project",
   },
