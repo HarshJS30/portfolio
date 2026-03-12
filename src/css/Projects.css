@@ -31,7 +31,7 @@
 
 .proj-intro-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(4rem, 10vw, 9rem);
+  font-size: clamp(3.2rem, 10vw, 9rem);
   line-height: 0.95;
   letter-spacing: 0.01em;
   color: #fff;
@@ -57,19 +57,17 @@
   50%       { transform: translateY(8px); }
 }
 
-/* ── SPOTLIGHT SECTION ── */
+/* ── SPOTLIGHT (DESKTOP) ── */
 .proj-spotlight {
   height: 100vh;
   display: grid;
   grid-template-columns: 120px 1fr 380px;
-  gap: 0;
   padding: 60px 4vw 60px 6vw;
   overflow: hidden;
   position: relative;
   background: #080808;
 }
 
-/* subtle grid lines */
 .proj-spotlight::before {
   content: "";
   position: absolute;
@@ -128,15 +126,21 @@
   border-radius: 16px;
   overflow: hidden;
   position: relative;
-  opacity: 0.15;
-  transform: scale(0.96);
+  opacity: 0.12;
+  transform: scale(0.95);
   border: 1px solid #1a1a1a;
   will-change: opacity, transform;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .proj-image-bg {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  opacity: 0.9;
 }
 
 .proj-image-overlay {
@@ -147,6 +151,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 1;
 }
 
 .proj-image-type {
@@ -172,6 +177,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
+  z-index: 1;
 }
 
 .proj-image-tag {
@@ -187,38 +193,36 @@
 /* ── RIGHT: TITLES ── */
 .proj-names-wrap {
   display: flex;
-  align-items: center;        /* vertically center the text block */
+  align-items: flex-start;      /* align to top so overflow:hidden clips bottom */
   justify-content: flex-start;
-  padding-left: 40px;
-  position: relative;
   overflow: hidden;
+  padding-left: 40px;
+  padding-top: 20px;
 }
 
 .proj-names {
-  position: relative;
   width: 100%;
-  height: 100%;
+  will-change: transform;
+  /* NO position:relative/absolute — it's a normal flow block that GSAP moves */
 }
 
-/* All titles stack on top of each other at position 0,0 */
+/* Each title is a normal flow block — stacked vertically, GSAP scrolls the parent */
 .proj-title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 32px 0;
-  opacity: 0;                 /* hidden by default, JS drives visibility */
-  color: #fff;
-  will-change: transform, opacity;
+  padding: 28px 0 32px;
+  border-bottom: 1px solid #111;
+  opacity: 0.12;
+  color: #222;
+  will-change: opacity, color;
+  transition: opacity 0.15s ease, color 0.15s ease;
 }
 
 .proj-title-role {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.68rem;
-  color: #555;
+  color: #444;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -245,6 +249,7 @@
   margin-top: 6px;
 }
 
+/* ── SHARED LINK STYLES ── */
 .proj-link {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem;
@@ -255,25 +260,15 @@
   transition: background 0.2s, color 0.2s;
 }
 
-.proj-link--live {
-  background: #fff;
-  color: #000;
-}
-
-.proj-link--live:hover {
-  background: #ddd;
-}
+.proj-link--live { background: #fff; color: #000; }
+.proj-link--live:hover { background: #ddd; }
 
 .proj-link--gh {
   background: #1a1a1a;
   color: #888;
   border: 1px solid #2a2a2a;
 }
-
-.proj-link--gh:hover {
-  background: #222;
-  color: #fff;
-}
+.proj-link--gh:hover { background: #222; color: #fff; }
 
 .proj-link--wip {
   background: transparent;
@@ -283,9 +278,124 @@
   font-size: 0.65rem;
 }
 
+/* ── MOBILE CARD LIST ── */
+.mob-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 16px 60px;
+}
+
+@keyframes mobFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.mob-card {
+  background: #111;
+  border: 1px solid #1e1e1e;
+  border-radius: 20px;
+  overflow: hidden;
+  animation: mobFadeUp 0.5s ease both;
+  transition: border-color 0.2s;
+}
+
+.mob-card:hover { border-color: var(--accent, #444); }
+
+.mob-card-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.mob-card-badges {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1;
+}
+
+.mob-card-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.6);
+  background: rgba(0,0,0,0.5);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+
+.mob-card-year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.mob-card-tags {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  z-index: 1;
+}
+
+.mob-card-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid;
+  background: rgba(0,0,0,0.6);
+  letter-spacing: 0.03em;
+}
+
+.mob-card-body {
+  padding: 16px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mob-card-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: #555;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mob-card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.mob-card-desc {
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.6;
+  font-weight: 300;
+  margin-top: 2px;
+}
+
+.mob-card-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
 /* ── OUTRO ── */
 .proj-outro {
-  height: 100vh;
+  height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -295,7 +405,7 @@
 
 .proj-outro-text {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 3rem;
+  font-size: clamp(1.8rem, 6vw, 3rem);
   color: #222;
   letter-spacing: 0.04em;
 }
@@ -304,40 +414,13 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
   color: #555;
-  text-decoration: none;
-  letter-spacing: 0.08em;
+  background: none;
+  border: none;
   border-bottom: 1px solid #2a2a2a;
   padding-bottom: 2px;
+  cursor: pointer;
+  letter-spacing: 0.08em;
   transition: color 0.2s, border-color 0.2s;
 }
 
-.proj-back:hover {
-  color: #fff;
-  border-color: #fff;
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 768px) {
-  .proj-spotlight {
-    grid-template-columns: 60px 1fr;
-    grid-template-rows: auto auto;
-    padding: 40px 20px;
-  }
-
-  .proj-names-wrap {
-    display: none;
-  }
-
-  .proj-image {
-    width: 85vw;
-  }
-}
-.proj-image-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-  opacity: 0.8;
-}
+.proj-back:hover { color: #fff; border-color: #fff; }

@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useNavigate } from "react-router-dom";
 import "../css/Projects.css";
 import img1 from '../assets/pr1.png';
 import img2 from '../assets/pr3.png';
@@ -29,11 +30,11 @@ const PROJECTS = [
     name: "Dashboard",
     role: "Freelance · Full Stack",
     desc: "Government personnel management system for quick access to departmental staff information. Built for a paying client with real-world data requirements.",
-    tags: ["NextJS","Google Sheets"],
+    tags: ["React", "Node.js", "Express.js", "MongoDB"],
     image: img4,
     accent: "#60a5fa",
     github: null,
-    live: "https://dashboard-livid-two-18.vercel.app/",
+    live: null,
     year: "2024",
     type: "Client Work",
   },
@@ -45,8 +46,8 @@ const PROJECTS = [
     tags: ["React", "Node.js", "MongoDB", "Auth"],
     image: img1,
     accent: "#a78bfa",
-    github: "https://github.com/harshjs30/grindbook",
-    live: "https://grindbook.vercel.app/",
+    github: "https://github.com/harshjs30",
+    live: null,
     year: "2024",
     type: "Personal Project",
   },
@@ -55,12 +56,12 @@ const PROJECTS = [
     name: "OneDSA",
     role: "Solo · Frontend",
     desc: "One curated DSA challenge per day from a hand-picked list of 100 questions. Tags, difficulty levels, and direct problem links — no fluff.",
-    tags: ["NextJS", "Tailwind"],
+    tags: ["React", "Tailwind", "GSAP"],
     image: img3,
     accent: "#facc15",
-    github: "https://github.com/harshjs30/onedsa",
-    live: "https://onedsa.vercel.app/",
-    year: "2025",
+    github: "https://github.com/harshjs30",
+    live: null,
+    year: "2024",
     type: "Personal Project",
   },
   {
@@ -72,13 +73,62 @@ const PROJECTS = [
     image: img2,
     accent: "#34d399",
     github: "https://github.com/harshjs30",
-    live: "https://anon-mu-one.vercel.app/",
-    year: "2025",
+    live: null,
+    year: "2024",
     type: "Personal Project",
   },
 ];
 
-export default function Projects() {
+// ── MOBILE CARD ─────────────────────────────────────────────
+function MobileCard({ p, index }) {
+  return (
+    <div className="mob-card" style={{ "--accent": p.accent, animationDelay: `${index * 0.08}s` }}>
+      <div
+        className="mob-card-image"
+        style={{
+          backgroundImage: `url(${p.image})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="mob-card-badges">
+          <span className="mob-card-type">{p.type}</span>
+          <span className="mob-card-year">{p.year}</span>
+        </div>
+        <div className="mob-card-tags">
+          {p.tags.map((t) => (
+            <span key={t} className="mob-card-tag" style={{ borderColor: p.accent, color: p.accent }}>
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="mob-card-body">
+        <p className="mob-card-role">{p.role}</p>
+        <h2 className="mob-card-name">{p.name}</h2>
+        <p className="mob-card-desc">{p.desc}</p>
+        <div className="mob-card-links">
+          {p.live && (
+            <a href={p.live} target="_blank" rel="noopener noreferrer" className="proj-link proj-link--live">
+              Live ↗
+            </a>
+          )}
+          {p.github && (
+            <a href={p.github} target="_blank" rel="noopener noreferrer" className="proj-link proj-link--gh">
+              GitHub ↗
+            </a>
+          )}
+          {!p.live && !p.github && (
+            <span className="proj-link proj-link--wip">In Progress</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── DESKTOP SCROLL ───────────────────────────────────────────
+function DesktopScroll() {
   const sectionRef = useRef(null);
   const indexRef = useRef(null);
   const imagesRef = useRef(null);
@@ -86,160 +136,170 @@ export default function Projects() {
   const counterRef = useRef(null);
 
   useEffect(() => {
-  const section = sectionRef.current;
-  const indexEl = indexRef.current;
-  const imagesEl = imagesRef.current;
-  const namesEl = namesRef.current;
-  const counter = counterRef.current;
+    const section = sectionRef.current;
+    const indexEl = indexRef.current;
+    const imagesEl = imagesRef.current;
+    const namesEl = namesRef.current;
+    const counter = counterRef.current;
 
-  const images = imagesEl.querySelectorAll(".proj-image");
-  const titles = namesEl.querySelectorAll(".proj-title");
-  const total = PROJECTS.length;
-  const pad = (n) => String(n).padStart(2, "0");
+    const images = imagesEl.querySelectorAll(".proj-image");
+    const titles = namesEl.querySelectorAll(".proj-title");
+    const total = PROJECTS.length;
+    const pad = (n) => String(n).padStart(2, "0");
 
-  const sectionH = section.offsetHeight;
-  const style = getComputedStyle(section);
-  const pt = parseFloat(style.paddingTop);
-  const pb = parseFloat(style.paddingBottom);
+    const sectionH = section.offsetHeight;
+    const style = getComputedStyle(section);
+    const pt = parseFloat(style.paddingTop);
+    const pb = parseFloat(style.paddingBottom);
 
-  const indexH = indexEl.offsetHeight;
-  const imagesH = imagesEl.offsetHeight;
+    const indexH = indexEl.offsetHeight;
+    const imagesH = imagesEl.scrollHeight;
+    const titleHeights = Array.from(titles).map((t) => t.offsetHeight);
+    const totalNamesH = titleHeights.reduce((a, b) => a + b, 0);
 
-  const indexTravel = sectionH - pt - pb - indexH;
-  const imagesTravel = -(imagesH - (sectionH - pt - pb));
+    const indexTravel = sectionH - pt - pb - indexH;
+    const imagesTravel = -(imagesH - (sectionH - pt - pb));
+    const namesTravel = totalNamesH - (sectionH - pt - pb);
+    const threshold = window.innerHeight / 2;
 
-  const threshold = window.innerHeight / 2;
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: `+=${sectionH * (total - 1)}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const rawIndex = Math.min(Math.floor(progress * total) + 1, total);
+          counter.textContent = `${pad(rawIndex)} / ${pad(total)}`;
 
-  const ctx = gsap.context(() => {
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: `+=${sectionH * (total - 1)}`,
-      pin: true,
-      pinSpacing: true,
-      scrub: 1,
-      onUpdate: (self) => {
-        const progress = self.progress;
+          gsap.set(indexEl, { y: progress * indexTravel });
+          gsap.set(imagesEl, { y: progress * imagesTravel });
 
-        // Move index + images
-        gsap.set(indexEl, { y: progress * indexTravel });
-        gsap.set(imagesEl, { y: progress * imagesTravel });
-
-        // Find which image is actually in the center of the viewport RIGHT NOW
-        let activeIndex = 0;
-        let closestDist = Infinity;
-
-        images.forEach((img, i) => {
-          const rect = img.getBoundingClientRect();
-          const imgCenter = rect.top + rect.height / 2;
-          const dist = Math.abs(imgCenter - threshold);
-
-          const isInView = rect.top < threshold && rect.bottom > threshold;
-          gsap.set(img, {
-            opacity: isInView ? 1 : 0.15,
-            scale: isInView ? 1 : 0.96,
+          images.forEach((img) => {
+            const rect = img.getBoundingClientRect();
+            const active = rect.top < threshold && rect.bottom > threshold;
+            gsap.set(img, { opacity: active ? 1 : 0.15, scale: active ? 1 : 0.96 });
           });
 
-          if (dist < closestDist) {
-            closestDist = dist;
-            activeIndex = i;
-          }
-        });
+          titles.forEach((title, i) => {
+            const start = i / total;
+            const end = (i + 1) / total;
+            const localP = Math.min(Math.max((progress - start) / (end - start), 0), 1);
+            gsap.set(namesEl, {});
+            gsap.set(title, {
+              y: -(progress * namesTravel),
+              color: localP > 0 && localP <= 1 ? "#ffffff" : "#2a2a2a",
+              opacity: localP >= 1 ? 0.3 : localP > 0 ? 1 : 0.15,
+            });
+          });
+        },
+      });
+    }, section);
 
-        // Counter synced to active image
-        counter.textContent = `${pad(activeIndex + 1)} / ${pad(total)}`;
+    return () => ctx.revert();
+  }, []);
 
-        // Titles swap exactly when image crosses center
-        titles.forEach((title, i) => {
-          if (i === activeIndex) {
-            gsap.set(title, { opacity: 1, y: 0, pointerEvents: "auto" });
-          } else if (i < activeIndex) {
-            gsap.set(title, { opacity: 0, y: -40, pointerEvents: "none" });
-          } else {
-            gsap.set(title, { opacity: 0, y: 40, pointerEvents: "none" });
-          }
-        });
-      },
-    });
-  }, section);
+  return (
+    <section className="proj-spotlight" ref={sectionRef}>
+      <div className="proj-index" ref={indexRef}>
+        <span className="proj-counter" ref={counterRef}>01 / 05</span>
+        <div className="proj-index-line" />
+      </div>
 
-  return () => ctx.revert();
-}, []);
+      <div className="proj-images-wrap">
+        <div className="proj-images" ref={imagesRef}>
+          {PROJECTS.map((p) => (
+            <div key={p.id} className="proj-image" style={{ "--accent": p.accent }}>
+              <img src={p.image} alt={p.name} className="proj-image-bg" />
+              <div className="proj-image-overlay">
+                <span className="proj-image-type">{p.type}</span>
+                <span className="proj-image-year">{p.year}</span>
+              </div>
+              <div className="proj-image-tags">
+                {p.tags.map((t) => (
+                  <span key={t} className="proj-image-tag" style={{ borderColor: p.accent, color: p.accent }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="proj-names-wrap">
+        <div className="proj-names" ref={namesRef}>
+          {PROJECTS.map((p) => (
+            <div key={p.id} className="proj-title">
+              <p className="proj-title-role">{p.role}</p>
+              <h2 className="proj-title-name">{p.name}</h2>
+              <p className="proj-title-desc">{p.desc}</p>
+              <div className="proj-title-links">
+                {p.live && (
+                  <a href={p.live} target="_blank" rel="noopener noreferrer" className="proj-link proj-link--live">
+                    Live Preview ↗
+                  </a>
+                )}
+                {p.github && (
+                  <a href={p.github} target="_blank" rel="noopener noreferrer" className="proj-link proj-link--gh">
+                    GitHub ↗
+                  </a>
+                )}
+                {!p.live && !p.github && (
+                  <span className="proj-link proj-link--wip">In Progress</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── MAIN ─────────────────────────────────────────────────────
+export default function Projects() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
 
   return (
     <div className="projects-page">
       {/* Intro */}
       <div className="proj-intro">
         <p className="proj-intro-label">selected work</p>
-        <h1 className="proj-intro-title">Things I've<br />actually built.</h1>
-        <p className="proj-intro-sub">Scroll to explore</p>
+        <h1 className="proj-intro-title">
+          Things I've<br />actually built.
+        </h1>
+        <p className="proj-intro-sub">{isMobile ? "Scroll through" : "Scroll to explore"}</p>
         <div className="proj-intro-arrow">↓</div>
       </div>
 
-      {/* Pinned spotlight */}
-      <section className="proj-spotlight" ref={sectionRef}>
-        {/* Left: index counter */}
-        <div className="proj-index" ref={indexRef}>
-          <span className="proj-counter" ref={counterRef}>01 / 05</span>
-          <div className="proj-index-line" />
+      {/* Desktop: pinned GSAP scroll | Mobile: card stack */}
+      {isMobile ? (
+        <div className="mob-list">
+          {PROJECTS.map((p, i) => (
+            <MobileCard key={p.id} p={p} index={i} />
+          ))}
         </div>
-
-        {/* Center: images stack */}
-        <div className="proj-images-wrap">
-          <div className="proj-images" ref={imagesRef}>
-            {PROJECTS.map((p) => (
-              <div key={p.id} className="proj-image" style={{ "--accent": p.accent }}>
-                {/* Gradient placeholder — swap with <img> when you have screenshots */}
-                <img src={p.image} alt={p.name} className="proj-image-bg" />
-                <div className="proj-image-overlay">
-                  <span className="proj-image-type">{p.type}</span>
-                  <span className="proj-image-year">{p.year}</span>
-                </div>
-                <div className="proj-image-tags">
-                  {p.tags.map((t) => (
-                    <span key={t} className="proj-image-tag" style={{ borderColor: p.accent, color: p.accent }}>
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right: titles + desc */}
-        <div className="proj-names-wrap">
-          <div className="proj-names" ref={namesRef}>
-            {PROJECTS.map((p) => (
-              <div key={p.id} className="proj-title">
-                <p className="proj-title-role">{p.role}</p>
-                <h2 className="proj-title-name">{p.name}</h2>
-                <p className="proj-title-desc">{p.desc}</p>
-                <div className="proj-title-links">
-                  {p.live && (
-                    <a href={p.live} target="_blank" rel="noopener noreferrer" className="proj-link proj-link--live">
-                      Live Preview ↗
-                    </a>
-                  )}
-                  {p.github && (
-                    <a href={p.github} target="_blank" rel="noopener noreferrer" className="proj-link proj-link--gh">
-                      GitHub ↗
-                    </a>
-                  )}
-                  {!p.live && !p.github && (
-                    <span className="proj-link proj-link--wip">In Progress</span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      ) : (
+        <DesktopScroll />
+      )}
 
       {/* Outro */}
       <div className="proj-outro">
         <p className="proj-outro-text">More coming soon.</p>
-        <a href="/" className="proj-back">← Back to portfolio</a>
+        <button className="proj-back" onClick={() => navigate("/")}>
+          ← Back to portfolio
+        </button>
       </div>
     </div>
   );
