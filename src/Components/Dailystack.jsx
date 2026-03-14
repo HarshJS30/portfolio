@@ -85,7 +85,7 @@ const FALLBACK_MUSIC = {
   url: null,
   nowplaying: false,
 };
-// Generate last 91 days (13 weeks) of dates
+
 function getLast91Days() {
   const days = [];
   const today = new Date();
@@ -118,6 +118,7 @@ export default function DailyStack() {
   const [contributions, setContributions] = useState({});
   const [totalContribs, setTotalContribs] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
+  const [blog, setBlog] = useState(null);
 
   // Last.fm
   useEffect(() => {
@@ -188,13 +189,43 @@ export default function DailyStack() {
       .catch(() => setGraphLoading(false));
   }, []);
 
+  // Hashnode latest post
+  useEffect(() => {
+    fetch("https://gql.hashnode.com/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `{
+          publication(host: "harshjs.hashnode.dev") {
+            posts(first: 1) {
+              edges {
+                node {
+                  title
+                  brief
+                  url
+                  publishedAt
+                  readTimeInMinutes
+                }
+              }
+            }
+          }
+        }`,
+      }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        const node = data.data.publication.posts.edges[0]?.node;
+        if (node) setBlog(node);
+      })
+      .catch(() => {});
+  }, []);
+
   const handleMusicClick = () => {
     const query = encodeURIComponent(`${music.title} ${music.artist}`);
     window.open(`https://music.youtube.com/search?q=${query}`, "_blank");
   };
 
   const days = getLast91Days();
-  // Split into weeks of 7
   const weeks = [];
   for (let i = 0; i < days.length; i += 7) {
     weeks.push(days.slice(i, i + 7));
@@ -224,6 +255,29 @@ export default function DailyStack() {
           <p className="ds-tool-label">Tool</p>
           <p className="ds-stack">STACK.</p>
           <div className="ds-pill" />
+          {blog && (
+            <div
+              className="ds-blog"
+              onClick={() => window.open(blog.url, "_blank")}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="ds-blog-meta">
+                <span className="ds-blog-badge">* latest post</span>
+                <span className="ds-blog-date">
+                  {new Date(blog.publishedAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+                <span className="ds-blog-read">{blog.readTimeInMinutes} min read</span>
+              </div>
+              <p className="ds-blog-title">{blog.title}</p>
+              {blog.brief && (
+                <p className="ds-blog-desc">{blog.brief}</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* GitHub Contribution Graph */}
