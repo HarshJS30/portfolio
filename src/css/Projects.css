@@ -424,3 +424,53 @@
 }
 
 .proj-back:hover { color: #fff; border-color: #fff; }
+
+
+@media (max-width: 1100px) {
+  .proj-spotlight {
+    grid-template-columns: 90px 1fr 320px;
+    padding: 40px 3vw;
+    gap: 12px;
+  }
+
+  .proj-names-wrap {
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-page {
+    overflow-x: hidden;
+  }
+
+  .proj-intro {
+    padding: 72px 16px 38px;
+    min-height: 65vh;
+  }
+
+  .proj-intro-title {
+    font-size: clamp(2.2rem, 12vw, 3.6rem);
+  }
+
+  .mob-list {
+    padding: 0 12px 44px;
+  }
+
+  .mob-card-body {
+    padding: 14px 14px 18px;
+  }
+
+  .mob-card-name {
+    font-size: 1.8rem;
+  }
+
+  .mob-card-links {
+    flex-wrap: wrap;
+  }
+
+  .proj-outro {
+    height: auto;
+    padding: 40px 16px 56px;
+    gap: 16px;
+  }
+}

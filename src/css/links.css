@@ -138,3 +138,25 @@
   animation: breathe 2s ease-in-out infinite;
   animation-delay: 0.4s;
 }
+
+
+@media (max-width: 900px) {
+  .links-panel__project {
+    min-height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .links-panel__top,
+  .links-panel__project {
+    padding: 16px;
+  }
+
+  .links-panel__title {
+    font-size: 2.1rem;
+  }
+
+  .links-panel__project-name {
+    font-size: 1.8rem;
+  }
+}

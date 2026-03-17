@@ -132,3 +132,33 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
+
+
+@media (max-width: 600px) {
+  .hero-card {
+    padding: 18px;
+    gap: 16px;
+  }
+
+  .hero-card__headline {
+    font-size: 1.2rem;
+  }
+
+  .hero-card__desc {
+    font-size: 0.82rem;
+  }
+
+  .hero-card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .hero-card__status {
+    text-align: left;
+  }
+
+  .hero-card__time {
+    word-break: break-all;
+  }
+}

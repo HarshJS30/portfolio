@@ -405,3 +405,45 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+
+@media (max-width: 900px) {
+  .ds-top-row {
+    grid-template-columns: 44px 1fr;
+  }
+
+  .ds-github {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .ds-wrap {
+    padding: 12px;
+  }
+
+  .ds-top-row,
+  .ds-bottom-row {
+    grid-template-columns: 1fr;
+  }
+
+  .ds-tools-col {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .ds-tool-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ds-daily,
+  .ds-stack,
+  .ds-building-name {
+    font-size: 1.3rem;
+  }
+
+  .ds-blog {
+    margin-top: 20px;
+  }
+}
