@@ -138,3 +138,41 @@
   animation: breathe 2s ease-in-out infinite;
   animation-delay: 0.4s;
 }
+.links-panel__client {
+  background: #34d399; /* green tone → different but same energy */
+  border-radius: 20px;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  min-height: 180px;
+}
+
+/* reuse same pseudo + animations */
+.links-panel__client::before {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  right: -30px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  animation: breathe 2s ease-in-out infinite;
+}
+
+.links-panel__client::after {
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  right: -50px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  animation: breathe 2s ease-in-out infinite;
+  animation-delay: 0.4s;
+}

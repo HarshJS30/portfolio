@@ -93,6 +93,18 @@ export default function LinksPanel() {
           <span>芸</span>
         </div>
       </Link>
+      <Link to="/client-work" className="links-panel__client">
+        <div className="links-panel__project-icon">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M4 7h16M4 12h10M4 17h7" />
+          </svg>
+        </div>
+        <h3 className="links-panel__project-name">CLIENT<br />WORK</h3>
+        <div className="links-panel__kanji">
+          <span>顧</span>
+          <span>客</span>
+        </div>
+      </Link>
     </div>
   );
 }
