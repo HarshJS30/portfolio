@@ -405,3 +405,53 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+@media (max-width: 640px) {
+  .ds-wrap {
+    padding: 12px;
+    overflow-x: hidden;
+  }
+
+  .ds-top-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .ds-tools-col {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ds-tool-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ds-github {
+    min-width: 0;
+    overflow-x: auto;
+  }
+
+  .ds-contrib-grid {
+    min-width: max-content;
+  }
+
+  .ds-bottom-row {
+    grid-template-columns: 1fr;
+  }
+
+  .ds-building {
+    padding: 12px;
+  }
+
+  .ds-building-name {
+    font-size: 1.35rem;
+  }
+
+  .ds-building-desc {
+    font-size: 0.7rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+}
