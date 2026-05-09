@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../css/Projects.css";
 import img4 from '../assets/cw2.png';
 import img5 from '../assets/cw.png';
+import img6 from '../assets/cw3.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,6 +30,19 @@ const PROJECTS = [
     desc: "Developed a portfolio-driven jewellery website to showcase handcrafted collections and generate warmer leads. Focused on strong visual hierarchy, reusable UI components, and smooth navigation while highlighting craftsmanship and brand identity.",
     tags: ["NextJS", "Figma"],
     image: img4,
+    accent: "#60a5fa",
+    github: null,
+    live: "https://beadsandbonds.vercel.app/",
+    year: "2026",
+    type: "Client Work",
+  },
+  {
+    id: 3,
+    name: "QALB",
+    role: "Freelance · Full Stack",
+    desc: "Developed a modern e-commerce website for a clothing brand, focused on showcasing collections through strong visual hierarchy, seamless product discovery, and a premium shopping experience. Built reusable UI components, intuitive navigation, and responsive layouts while emphasizing brand identity, product presentation, and conversion-driven design.",
+    tags: ["NextJS", "Figma"],
+    image: img6,
     accent: "#60a5fa",
     github: null,
     live: null,
