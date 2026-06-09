@@ -6,6 +6,8 @@ import "../css/Projects.css";
 import img4 from '../assets/cw2.png';
 import img5 from '../assets/cw.png';
 import img6 from '../assets/cw3.png';
+import img7 from '../assets/cw4.png';
+import img8 from '../assets/cw5.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,6 +45,32 @@ const PROJECTS = [
     desc: "Developed a modern e-commerce website for a clothing brand, focused on showcasing collections through strong visual hierarchy, seamless product discovery, and a premium shopping experience. Built reusable UI components, intuitive navigation, and responsive layouts while emphasizing brand identity, product presentation, and conversion-driven design.",
     tags: ["NextJS", "Figma"],
     image: img6,
+    accent: "#60a5fa",
+    github: null,
+    live: null,
+    year: "2026",
+    type: "Client Work",
+  },
+  {
+    id: 4,
+    name: "Elinour",
+    role: "Freelance · Frontend",
+    desc: "Developed a modern e-commerce website for a jewellery brand, focused on showcasing their products through visual hierarchy, with easy UX and a smooth overall user experience that helps generate warmer leads, integrarted it with Whatsapp for direct customer inquiries.",
+    tags: ["NextJS", "Figma"],
+    image: img7,
+    accent: "#60a5fa",
+    github: null,
+    live: null,
+    year: "2026",
+    type: "Client Work",
+  },
+  {
+    id: 5,
+    name: "The Hypple",
+    role: "Freelance · Frontend",
+    desc: "Developed a modern website for a marketing brand, focused on showcasing their portfolio and services through clean user flow, along with a clear CTA. Integrated it with calendly to make their appointment booking process seamless.",
+    tags: ["NextJS", "Figma","Calendly"],
+    image: img8,
     accent: "#60a5fa",
     github: null,
     live: null,
@@ -153,7 +181,7 @@ function DesktopScroll() {
             const isPast = localP >= 1;
 
             gsap.set(title, {
-              y: -(progress * totalNamesH * 0.6),
+              y: -(progress * imagesH * 0.6),
               color: isActive ? "#ffffff" : "#2a2a2a",
               opacity: isPast ? 0.35 : isActive ? 1 : 0.2,
             });
