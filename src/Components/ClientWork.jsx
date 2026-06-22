@@ -60,7 +60,7 @@ const PROJECTS = [
     image: img7,
     accent: "#60a5fa",
     github: null,
-    live: null,
+    live: "https://elinour.vercel.app/",
     year: "2026",
     type: "Client Work",
   },
