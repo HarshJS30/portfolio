@@ -164,7 +164,7 @@
   cursor: pointer;
   text-align: left;
   transition: background 0.2s, border-color 0.2s, transform 0.15s;
-  width: 100%;
+  width: 320px;
 }
 
 .ds-music:hover {
