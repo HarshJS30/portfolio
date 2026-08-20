@@ -147,7 +147,7 @@ function DesktopScroll() {
     const sectionH = section.offsetHeight;
     const imagesH = imagesEl.scrollHeight;
     const titleHeights = Array.from(titles).map((t) => t.offsetHeight);
-    const totalNamesH = titleHeights.reduce((a, b) => a + b, 0);
+    const _totalNamesH = titleHeights.reduce((a, b) => a + b, 0);
 
     const threshold = window.innerHeight / 2;
 

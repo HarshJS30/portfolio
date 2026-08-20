@@ -128,6 +128,49 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
+.hover-trigger {
+  position: relative;
+  cursor: pointer;
+}
+
+.hover-trigger span {
+  position: fixed;
+  z-index: 1000;
+  background: #fff;
+  padding: 7px;
+  border-radius: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-170%, 10%) scale(0.8) rotate(0deg);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.hover-trigger:hover span {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-170%, 10%) scale(1) rotate(0deg);
+}
+
+.hover-trigger span img {
+  display: block;
+  max-width: 300px;
+  height: auto;
+  border-radius: 15px;
+}
+
+.hover-trigger span::after{
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 10px 10px 10px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }

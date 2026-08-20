@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../css/Herocard.css";
+import img from "../assets/collage.png";
 
 export default function HeroCard() {
   const [time, setTime] = useState(new Date());
@@ -24,6 +25,32 @@ export default function HeroCard() {
     return "夕";
   };
 
+  const imageRef = useRef(null);
+  const lastMouseX = useRef(0);
+  const handleMouseEnter = (e) => {
+    if (!imageRef.current) return;
+
+    const x = e.clientX;
+    const y = e.clientY;
+
+    const deltaX = x-lastMouseX.current;
+    lastMouseX.current = x;
+
+    const rotation = Math.max(Math.min(deltaX * 2, 95), -95);
+
+
+    imageRef.current.style.left = `${x}px`;
+    imageRef.current.style.top = `${y}px`;
+
+    imageRef.current.style.transform = `translate(-170%, 10%) rotate(${rotation}deg)`;
+
+  }
+   const handleMouseLeave = () => {
+    if (!imageRef.current) return;
+    imageRef.current.style.transform = `translate(-170%, 10%) rotate(0deg)`;
+  }; 
+
+
   return (
     <div className="hero-card" style={{ animationDelay: "0.1s" }}>
       <div className="hero-card__top">
@@ -40,7 +67,15 @@ export default function HeroCard() {
 
       <div className="hero-card__bio">
         <p className="hero-card__headline">
-          I build <strong>Websites</strong> .
+          I build <strong className="hover-trigger" onMouseMove={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            Websites
+            <span className="hover-image-wrap" ref={imageRef}>
+              <img
+                src={img}
+                alt="Websites"
+              />
+            </span>
+            </strong> .
         </p>
         <p className="hero-card__desc">
           Hello, I'm Harsh, a 21 year old developer based in India.
