@@ -29,25 +29,20 @@ export default function HeroCard() {
   const lastMouseX = useRef(0);
   const handleMouseEnter = (e) => {
     if (!imageRef.current) return;
-
     const x = e.clientX;
     const y = e.clientY;
-
-    const deltaX = x-lastMouseX.current;
+    const deltaX = x - lastMouseX.current;
     lastMouseX.current = x;
-
     const rotation = Math.max(Math.min(deltaX * 2, 95), -95);
-
 
     imageRef.current.style.left = `${x}px`;
     imageRef.current.style.top = `${y}px`;
+    imageRef.current.style.setProperty("--tilt", `${rotation}deg`);
+  };
 
-    imageRef.current.style.transform = `translate(-170%, 10%) rotate(${rotation}deg)`;
-
-  }
-   const handleMouseLeave = () => {
+  const handleMouseLeave = () => {
     if (!imageRef.current) return;
-    imageRef.current.style.transform = `translate(-170%, 10%) rotate(0deg)`;
+    imageRef.current.style.setProperty("--tilt", `0deg`);
   }; 
 
 
