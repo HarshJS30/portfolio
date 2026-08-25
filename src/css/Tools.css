@@ -89,13 +89,19 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 100%;
+  height: fit-content;
 }
 
 .ds-github-header {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.ds-github-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .ds-github-label {
@@ -142,6 +148,73 @@
 .ds-contrib-day:hover {
   transform: scale(1.3);
   outline: 1px solid #444;
+}
+
+.floating-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-field label {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  color: #888;
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.floating-field:focus-within label{
+  top: -8px;
+  left: 8px;
+  font-size: 0.7rem;
+  color: #3b82f6;
+  background: #141414;
+  padding: 0 4px;
+}
+
+.floating-field.has-value label {
+  top: -8px;
+  left: 8px;
+  font-size: 0.7rem;
+  color: #3b82f6;
+  background: #141414;
+  padding: 0 4px;
+}
+
+.floating-field textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  resize: vertical;
+}
+
+.ds-contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.ds-contact-form button {
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #3b82f6;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
 }
 
 /* ── BOTTOM ROW ── */
