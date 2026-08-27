@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import "../css/Tools.css";
+import { motion } from "motion/react"
 
 const LASTFM_KEY = "ec87eb6a865c790b76455b8bd2a52452";
 const LASTFM_USER = "nottharsh";
@@ -109,7 +110,7 @@ function getContributionColor(count) {
 }
 
 const YTMusicIcon = () => (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+  <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
     <path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19.104c-3.924 0-7.104-3.18-7.104-7.104S8.076 4.896 12 4.896s7.104 3.18 7.104 7.104-3.18 7.104-7.104 7.104zm0-13.332c-3.432 0-6.228 2.796-6.228 6.228S8.568 18.228 12 18.228s6.228-2.796 6.228-6.228S15.432 5.772 12 5.772zM9.684 15.54V8.46L16.2 12l-6.516 3.54z" />
   </svg>
 );
@@ -121,6 +122,25 @@ export default function DailyStack() {
   const [totalContribs, setTotalContribs] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
   const [message, setMessage] = useState("");
+
+  // local play/pause state for the device UI — does not control real
+  // audio, Last.fm only tells us what's currently scrobbling, it doesn't
+  // give us transport control. Pressing play just toggles the pulse/visuals.
+  const [playing, setPlaying] = useState(false);
+
+  // Last.fm doesn't expose playback position, so this is "time since we
+  // detected the track playing," not the real song position. Ticks from
+  // 00:00 while nowplaying is true.
+  const [elapsed, setElapsed] = useState(0);
+
+  useEffect(() => {
+    if (!playing) return;
+    const id = setInterval(() => setElapsed((s) => s + 1), 1000);
+    return () => clearInterval(id);
+  }, [playing]);
+
+  const fmtTime = (s) =>
+    `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
   // Last.fm
   useEffect(() => {
@@ -135,13 +155,16 @@ export default function DailyStack() {
           track.image[2]["#text"] ||
           FALLBACK_MUSIC.cover;
 
+        const nowplaying = !!track["@attr"]?.nowplaying;
+
         setMusic({
           title: track.name,
           artist: track.artist["#text"],
           cover: img || FALLBACK_MUSIC.cover,
           url: track.url,
-          nowplaying: !!track["@attr"]?.nowplaying,
+          nowplaying,
         });
+        setPlaying(nowplaying);
       })
       .catch(() => {});
   }, []);
@@ -303,37 +326,57 @@ export default function DailyStack() {
         </div>
       </div>
 
-      {/* ── BOTTOM ROW: music | SureLM ── */}
+      {/* ── BOTTOM ROW: player | SureLM ── */}
       <div className="ds-bottom-row">
 
-        {/* Music card */}
-        <button className="ds-music" onClick={handleMusicClick}>
-          <div className="ds-music-left">
-            <div className="ds-music-platform">
-              <YTMusicIcon />
-              <span>YT Music</span>
-            </div>
+        {/* Retro device player — whole card is one button, opens YT Music */}
+        <button className="ds-player" onClick={handleMusicClick}>
+          <div className="ds-player-screen-frame">
+            <div className="ds-player-screen">
+              <img
+                src={music.cover}
+                alt={music.title}
+                className="ds-player-cover"
+              />
 
-            <div className="ds-music-text">
-              {music.nowplaying ? (
-                <span className="ds-nowplaying">
-                  <span className="ds-nowplaying-dot" />
-                  now playing
-                </span>
-              ) : (
-                <span className="ds-lastplayed">last played</span>
-              )}
+              <div className="ds-player-text">
+                <div className="ds-player-toprow">
+                  {music.nowplaying ? (
+                    <span className="ds-player-status">
+                      <motion.span
+                        className="ds-player-status-dot"
+                        animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      />
+                      PLAYING
+                    </span>
+                  ) : (
+                    <span className="ds-player-status is-last">LAST PLAYED</span>
+                  )}
 
-              <p className="ds-music-title">{music.title}</p>
-              <p className="ds-music-artist">{music.artist}</p>
+                  {music.nowplaying && (
+                    <span className="ds-player-time">{fmtTime(elapsed)}</span>
+                  )}
+                </div>
+
+                <p className="ds-player-title">{music.title}</p>
+                <p className="ds-player-artist">{music.artist}</p>
+              </div>
             </div>
           </div>
 
-          <img
-            src={music.cover}
-            alt={music.title}
-            className="ds-music-cover"
-          />
+          <motion.span
+            className="ds-player-play"
+            initial={false}
+            animate={{ scale: playing ? 0.94 : 1 }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          >
+            {playing ? "❚❚" : "▶"}
+          </motion.span>
         </button>
 
         {/* SureLM — Currently Building */}
