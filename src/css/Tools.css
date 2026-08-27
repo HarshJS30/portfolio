@@ -609,7 +609,9 @@
   }
 
   .ds-player {
-    padding: 6px 8px;
+    padding: 9px 35px;
+    margin-left: 10px;
+    width: 95%;
   }
 
   .ds-player-speaker {
