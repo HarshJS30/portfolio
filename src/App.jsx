@@ -1,4 +1,5 @@
-// src/App.jsx
+import { bind } from "cuelume";
+import { useEffect }from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Portfolio from "./Components/Portfolio";
 import Projects from "./Components/Projects";
@@ -6,6 +7,9 @@ import "./App.css";
 import Works from "./Components/ClientWork";
 
 export default function App() {
+  useEffect(() => {
+    bind()
+  },[])
   return (
     <BrowserRouter>
       <Routes>

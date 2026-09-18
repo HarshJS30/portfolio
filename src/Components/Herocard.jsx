@@ -62,7 +62,7 @@ export default function HeroCard() {
 
       <div className="hero-card__bio">
         <p className="hero-card__headline">
-          I build <strong className="hover-trigger" onMouseMove={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          I build <strong data-cuelume-hover="tick" className="hover-trigger" onMouseMove={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             Websites
             <span className="hover-image-wrap" ref={imageRef}>
               <img
@@ -73,7 +73,7 @@ export default function HeroCard() {
             </strong> .
         </p>
         <p className="hero-card__desc">
-          Hello, I'm Harsh, a 21 year old developer based in India.
+          Hello, I'm Harsh, a 21 year old developer based in India. I write occasionaly, you can find them at <a data-cuelume-hover="tick" href="https://nottharsh.bearblog.dev/blog/" target="_blank" rel="noopener noreferrer">my blog</a><span className="blog-arrow">↗</span>
         </p>
       </div>
 
