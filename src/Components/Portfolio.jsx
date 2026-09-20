@@ -4,6 +4,7 @@ import HeroCard from "./Herocard";
 import LinksPanel from "./Linkspanel";
 import TechStack from "./Techstack";
 import "../App.css";
+import MediaRemote from "./MediaRemote";
 
 export default function Portfolio() {
   return (
@@ -18,6 +19,7 @@ export default function Portfolio() {
         </div>
         <div className="portfolio__col portfolio__col--links">
           <LinksPanel />
+          <MediaRemote />
         </div>
       </div>
     </div>
