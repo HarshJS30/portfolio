@@ -73,7 +73,7 @@ export default function HeroCard() {
             </strong> .
         </p>
         <p className="hero-card__desc">
-          Hello, I'm Harsh, a 21 year old developer based in India. I write occasionaly, you can find them at <a data-cuelume-hover="tick" href="https://nottharsh.bearblog.dev/blog/" target="_blank" rel="noopener noreferrer">my blog</a><span className="blog-arrow">↗</span>
+          Hello, I'm Harsh, a 21 year old developer based in India. I write occasionaly, you can find them at <a data-cuelume-hover="tick" href="https://nottharsh.bearblog.dev/blog/" target="_blank" rel="noopener noreferrer">my blog.</a><span className="blog-arrow">↗</span><br /> Other than tech, I spend my time watching amazing shows and sports.
         </p>
       </div>
 

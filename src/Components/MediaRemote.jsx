@@ -1,73 +1,92 @@
 import { useEffect, useState } from "react";
 import { bind } from "cuelume"; // npm install cuelume
 import "../css/MediaRemote.css";
+import sfe1 from "../assets/webshows/sfe01.png";
+import sfe2 from "../assets/webshows/sfe02.png";
+import sfe3 from "../assets/webshows/sfe03.png";
+import sfe4 from "../assets/webshows/sfe04.png";
+import sfe5 from "../assets/webshows/sfe05.png";
+import sfe6 from "../assets/webshows/sfe06.png";
+import lf1 from "../assets/webshows/leftovers01.png";
+import lf2 from "../assets/webshows/leftovers02.png";
+import lf3 from "../assets/webshows/leftovers03.png";
+import lf4 from "../assets/webshows/leftovers04.png";
+import lf5 from "../assets/webshows/leftovers05.png";
+import rb1 from "../assets/webshows/robot01.png";
+import rb2 from "../assets/webshows/robot02.png";
+import rb3 from "../assets/webshows/robot03.png";
+import rb4 from "../assets/webshows/robot04.png";
+import rb5 from "../assets/webshows/robot05.png";
+import sh1 from "../assets/webshows/shield01.png";
+import sh2 from "../assets/webshows/shield02.png";
+import sh3 from "../assets/webshows/shield03.png";
+import sh4 from "../assets/webshows/shield04.png";
+import sh5 from "../assets/webshows/shield05.png";
+import sh6 from "../assets/webshows/shield06.png";
+import sh7 from "../assets/webshows/shield07.png";
+import amr1 from "../assets/webshows/americans01.png";
+import amr2 from "../assets/webshows/americans02.png";
+import amr3 from "../assets/webshows/americans03.png";
+import amr4 from "../assets/webshows/americans04.png";
+import amr5 from "../assets/webshows/americans05.png";
+import dex1 from "../assets/webshows/dexter01.png";
+import dex2 from "../assets/webshows/dexter02.png";
+import dex3 from "../assets/webshows/dexter03.png";
+import dex4 from "../assets/webshows/dexter04.png";
+import dex5 from "../assets/webshows/dexter05.png";
+import brb1 from "../assets/webshows/brba01.png";
+import brb2 from "../assets/webshows/brba02.png";
+import brb3 from "../assets/webshows/brba03.jpg";
+import brb4 from "../assets/webshows/brba04.jpg";
+import bcs1 from "../assets/webshows/bcs01.png";
+import bcs2 from "../assets/webshows/bcs02.png";
+import bcs3 from "../assets/webshows/bcs03.png";
+import bcs4 from "../assets/webshows/bcs04.png";
+import bcs5 from "../assets/webshows/bcs05.png";
 
 /* ---------- placeholder clips ----------
-   Swap `src` for your own image URLs / imports. Keep the shape
-   { src, alt, title } and everything else keeps working. */
-
-const svg = (markup) =>
-  `data:image/svg+xml,${encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 200' preserveAspectRatio='xMidYMid slice'>${markup}</svg>`
-  )}`;
+   A clip can have one `src` (the legacy shorthand), or a `photos` array.
+   Each photo is `{ src, alt? }`; the remote's controls step through the
+   photos before moving on to the next clip. */
 
 const DEMO_CLIPS = [
   {
-    title: "Harbour Bridge, 6:42pm",
-    alt: "Steel arch bridge against a dusk sky",
-    watching: true, // only this clip shows the "Currently watching" tag
-    src: svg(`
-      <defs><linearGradient id='a' x1='0' y1='0' x2='0' y2='1'>
-        <stop offset='0' stop-color='#93a6b1'/><stop offset='.52' stop-color='#dcc5a4'/>
-        <stop offset='1' stop-color='#a8794f'/></linearGradient></defs>
-      <rect width='320' height='200' fill='url(#a)'/>
-      <circle cx='232' cy='142' r='20' fill='#f0d9b4' opacity='.55'/>
-      <path d='M-12 176 Q158 44 332 176' fill='none' stroke='#2b2f32' stroke-width='13'/>
-      <path d='M-12 150 H332' stroke='#2b2f32' stroke-width='7'/>
-      <g stroke='#2b2f32' stroke-width='3'>
-        <path d='M42 150V131M88 150V108M134 150V92M180 150V92M226 150V108M272 150V131'/>
-      </g>
-      <rect y='176' width='320' height='24' fill='#23272a'/>`),
+    title: "Six Feet Under, 2001-2005",
+    watching: true,
+    src: [sfe6,sfe2,sfe1,sfe3,sfe5,sfe4],
   },
   {
-    title: "Rooftop, 11:08pm",
-    alt: "City blocks lit up at night",
-    src: svg(`
-      <defs><linearGradient id='b' x1='0' y1='0' x2='0' y2='1'>
-        <stop offset='0' stop-color='#111a2b'/><stop offset='1' stop-color='#33405c'/>
-      </linearGradient></defs>
-      <rect width='320' height='200' fill='url(#b)'/>
-      <g fill='#e8e2cf' opacity='.75'>
-        <circle cx='48' cy='36' r='1.4'/><circle cx='112' cy='22' r='1'/>
-        <circle cx='196' cy='44' r='1.2'/><circle cx='268' cy='28' r='1'/>
-      </g>
-      <g fill='#161d2c'>
-        <rect x='6' y='118' width='58' height='82'/><rect x='74' y='90' width='46' height='110'/>
-        <rect x='128' y='128' width='62' height='72'/><rect x='198' y='72' width='50' height='128'/>
-        <rect x='256' y='110' width='58' height='90'/>
-      </g>
-      <g fill='#f4c877' opacity='.85'>
-        <rect x='84' y='102' width='6' height='8'/><rect x='98' y='120' width='6' height='8'/>
-        <rect x='208' y='86' width='6' height='8'/><rect x='226' y='110' width='6' height='8'/>
-        <rect x='20' y='134' width='6' height='8'/><rect x='272' y='128' width='6' height='8'/>
-      </g>`),
+    title: "The Leftovers, 2014-2017",
+    src: [lf1,lf5,lf2,lf4,lf3],
   },
   {
-    title: "Coast road, 7:15am",
-    alt: "Rolling hills at sunrise",
-    src: svg(`
-      <defs><linearGradient id='c' x1='0' y1='0' x2='0' y2='1'>
-        <stop offset='0' stop-color='#f3d7bd'/><stop offset='1' stop-color='#e3a97f'/>
-      </linearGradient></defs>
-      <rect width='320' height='200' fill='url(#c)'/>
-      <circle cx='96' cy='86' r='26' fill='#fbeede' opacity='.9'/>
-      <path d='M0 142 Q78 104 152 140 T320 128 V200 H0Z' fill='#7d6a5c' opacity='.65'/>
-      <path d='M0 168 Q96 132 186 166 T320 156 V200 H0Z' fill='#4a3f39'/>`),
+    title: "Mr. Robot, 2015-2019",
+    src: [rb3,rb1,rb2,rb5,rb4],
   },
+  {
+    title: "The Shield, 2002-2008",
+    src: [sh4,sh2,sh3,sh5,sh7,sh6,sh1],
+  },
+  {
+    title: "The Americans, 2013-2018",
+    src: [amr1,amr2,amr5,amr3,amr4],
+  },
+  {
+    title: "Dexter, 2006-2013",
+    src: [dex2,dex1,dex3,dex5,dex4]
+  },
+  {
+    title: "Breaking Bad, 2008-2013",
+    src: [brb1,brb2,brb3,brb4]
+  },
+  {
+    title: "Better Call Saul, 2015-2022",
+    src: [bcs1,bcs2,bcs3,bcs4,bcs5]
+  }
 ];
 
 /* How often the next photo comes up while "playing" (slideshow mode). */
-const AUTO_ADVANCE_MS = 3500;
+const AUTO_ADVANCE_MS = 2000;
 
 /* ---------- icons ---------- */
 
@@ -103,17 +122,43 @@ const ForwardIcon = () => (
 let bound = false;
 
 export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
-  const [index, setIndex] = useState(0);
+  const [clipIndex, setClipIndex] = useState(0);
+  const [photoIndex, setPhotoIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const current = clips[index];
+  const current = clips[clipIndex];
 
-  const goTo = (to) => {
-    setIndex(to);
-    onChange?.(clips[to], to);
+  const getPhotos = (clip) => {
+    if (clip?.photos?.length) return clip.photos;
+    if (Array.isArray(clip?.src)) {
+      return clip.src.map((src, index) => ({
+        src,
+        alt: clip.alt ?? `Frame ${index + 1}`,
+      }));
+    }
+    if (clip?.src) return [{ src: clip.src, alt: clip.alt }];
+    return [];
   };
 
-  const prev = () => goTo((index - 1 + clips.length) % clips.length);
-  const next = () => goTo((index + 1) % clips.length);
+  const photos = getPhotos(current);
+  const currentPhoto = photos[photoIndex];
+  const photoCount = clips.reduce((total, clip) => total + getPhotos(clip).length, 0);
+
+  const selectPhoto = (nextClipIndex, nextPhotoIndex) => {
+    setClipIndex(nextClipIndex);
+    setPhotoIndex(nextPhotoIndex);
+    onChange?.(clips[nextClipIndex], nextClipIndex, nextPhotoIndex);
+  };
+
+  const prev = () => {
+    if (photoIndex > 0) return selectPhoto(clipIndex, photoIndex - 1);
+    const previousClip = (clipIndex - 1 + clips.length) % clips.length;
+    return selectPhoto(previousClip, Math.max(getPhotos(clips[previousClip]).length - 1, 0));
+  };
+
+  const next = () => {
+    if (photoIndex < photos.length - 1) return selectPhoto(clipIndex, photoIndex + 1);
+    return selectPhoto((clipIndex + 1) % clips.length, 0);
+  };
 
   // Wire up cuelume's data-cuelume-* attributes once.
   useEffect(() => {
@@ -124,11 +169,11 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
 
   // Slideshow autoplay while "playing".
   useEffect(() => {
-    if (!playing || clips.length < 2) return undefined;
+    if (!playing || photoCount < 2) return undefined;
     const id = setInterval(next, AUTO_ADVANCE_MS);
     return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playing, index, clips.length]);
+  }, [playing, clipIndex, photoIndex, photoCount]);
 
   return (
     <div
@@ -138,22 +183,24 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
     >
       <div className="remote__face">
         <div className="remote__screen">
-          {current ? (
+          {currentPhoto ? (
             <img
               className="remote__art"
-              key={current.src}
-              src={current.src}
-              alt={current.alt ?? ""}
+              key={currentPhoto.src}
+              src={currentPhoto.src}
+              alt={currentPhoto.alt ?? current.alt ?? ""}
               draggable="false"
             />
           ) : (
             <p className="remote__empty">Load a photo to start</p>
           )}
           <span className="remote__glass" aria-hidden="true" />
-          <span className="remote__badge">
-            <span className="remote__badge-dot" aria-hidden="true" />
-            Currently watching
-          </span>
+          {current?.watching === true && (
+            <span className="remote__badge">
+              <span className="remote__badge-dot" aria-hidden="true" />
+              Currently watching
+            </span>
+          )}
         </div>
 
         <div className="remote__plate">
@@ -170,7 +217,7 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
             data-cuelume-press
             data-cuelume-release
             aria-label="Previous photo"
-            disabled={clips.length < 2}
+            disabled={photoCount < 2}
           >
             <BackIcon />
           </button>
@@ -193,7 +240,7 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
             data-cuelume-press
             data-cuelume-release
             aria-label="Next photo"
-            disabled={clips.length < 2}
+            disabled={photoCount < 2}
           >
             <ForwardIcon />
           </button>

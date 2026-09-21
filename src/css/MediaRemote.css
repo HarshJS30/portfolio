@@ -1,14 +1,10 @@
 /* MediaRemote — a small moulded player.
-   Resize the whole unit with --unit; every dimension follows it.
+   All sizes are plain px now — tuned for the 232px-wide remote.
+   If you resize the whole thing, these need scaling by hand.
    Assumes Bebas Neue / DM Sans / JetBrains Mono are already loaded
    by the app (same as your tech-stack card) — no @import here. */
 
 .remote {
-  --unit: 232px;
-  --radius: calc(var(--unit) * 0.235);
-  /* Keep each nested curve concentric with the outer casing. The screen
-     extends slightly into the face padding, leaving a net inset of .042u. */
-  --screen-radius: calc(var(--radius) - (var(--unit) * 0.042));
   --shell-top: #262626;
   --shell-bottom: #101010;
   --face-top: #1e1e1e;
@@ -19,52 +15,36 @@
   --seam: rgba(0, 0, 0, 0.65);
   --font-display: "Bebas Neue", sans-serif;
   --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", monospace; /* reserved for any numeric/label read-out you add later */
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --font-mono: "JetBrains Mono", monospace; /* reserved for any numeric/label read-out */
 
   position: relative;
-  width: var(--unit);
+  width: 232px;
   max-width: 100%;
-  padding: calc(var(--unit) * 0.022);
-  border-radius: var(--radius);
+  padding: 5px;
+  border-radius: 30px;              /* outer shell corner */
   background: linear-gradient(170deg, var(--shell-top), var(--shell-bottom));
   box-shadow:
-    0 calc(var(--unit) * 0.075) calc(var(--unit) * 0.11) calc(var(--unit) * -0.05) rgba(0, 0, 0, 0.42),
-    0 calc(var(--unit) * 0.012) calc(var(--unit) * 0.03) rgba(0, 0, 0, 0.3),
+    0 18px 26px -12px rgba(0, 0, 0, 0.42),
+    0 3px 7px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
     inset 0 -1px 1px rgba(0, 0, 0, 0.6);
   -webkit-user-select: none;
   user-select: none;
 }
 
-/* Film grain over the whole unit — casing and screen alike, so the
-   photo and the plastic share the same surface. */
-.remote::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: inherit;
-  background-image: var(--grain);
-  background-size: calc(var(--unit) * 0.55);
-  opacity: 0.16;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-}
-
 /* The inner face sits a hair below the outer lip — that seam is what
    makes the casing read as two moulded parts rather than one flat box. */
 .remote__face {
   position: relative;
-  overflow: hidden; /* keeps the wider screen from poking past this corner */
+  overflow: hidden; /* keeps the screen from poking past this corner */
   display: grid;
-  gap: calc(var(--unit) * 0.036);
-  padding: calc(var(--unit) * 0.052);
-  border-radius: calc(var(--radius) * 0.87);
+  gap: 8px;
+  padding: 12px;
+  border-radius: 24px;              /* inner face corner */
   background: linear-gradient(180deg, var(--face-top), var(--face-bottom));
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.09),
-    inset 0 calc(var(--unit) * -0.01) calc(var(--unit) * 0.03) rgba(0, 0, 0, 0.35),
+    inset 0 -2px 7px rgba(0, 0, 0, 0.35),
     0 1px 1px rgba(0, 0, 0, 0.45);
 }
 
@@ -75,22 +55,16 @@
   aspect-ratio: 16 / 12;
   overflow: hidden;
 
-  margin-top: calc(var(--unit) * -0.042);
-  margin-left: calc(var(--unit) * -0.032);
-  margin-right: calc(var(--unit) * -0.032);
+  margin: -8px -8px 0;              /* pull-in on top/left/right only — bottom stays flush */
 
-  border-radius: calc(var(--radius) * 0.87)
-    calc(var(--radius) * 0.87)
-    0
-    0;
+  /* top-left top-right bottom-right bottom-left — only the top two round */
+  border-radius: 18px 18px 0 0;
 
   background: var(--well);
 
   box-shadow:
     inset 0 0 0 1px rgba(0, 0, 0, 0.8),
-    inset 0 calc(var(--unit) * 0.014)
-      calc(var(--unit) * 0.03)
-      rgba(0, 0, 0, 0.75),
+    inset 0 3px 7px rgba(0, 0, 0, 0.75),
     0 1px 0 rgba(255, 255, 255, 0.07);
 }
 
@@ -98,7 +72,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  border-radius: inherit;
+  border-radius: 18px 18px 0 0;     /* must match .remote__screen exactly */
   object-fit: cover;
   animation: clip-in 0.34s ease both;
 }
@@ -117,55 +91,35 @@
   margin: 0;
   padding: 0 1em;
   color: #6f716c;
-  font: 500 calc(var(--unit) * 0.052) / 1.35 var(--font-body);
+  font: 500 12px / 1.35 var(--font-body);
   text-align: center;
-}
-
-/* Extra bite of grain on the image itself, plus one soft diagonal wipe
-   across the cover glass. */
-.remote__glass {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background:
-    var(--grain),
-    linear-gradient(
-      128deg,
-      rgba(255, 255, 255, 0.14) 0%,
-      rgba(255, 255, 255, 0.03) 26%,
-      rgba(255, 255, 255, 0) 52%
-    ),
-    radial-gradient(120% 80% at 50% 118%, rgba(0, 0, 0, 0.38), transparent 62%);
-  background-size: calc(var(--unit) * 0.4), auto, auto;
-  background-blend-mode: soft-light, normal, normal;
 }
 
 /* ---------- status badge ---------- */
 
 .remote__badge {
   position: absolute;
-  right: calc(var(--unit) * 0.032);
-  bottom: calc(var(--unit) * 0.032);
+  right: 7px;
+  bottom: 7px;
   z-index: 2;
   display: inline-flex;
   align-items: center;
-  gap: calc(var(--unit) * 0.014);
-  padding: calc(var(--unit) * 0.011) calc(var(--unit) * 0.026);
-  border-radius: calc(var(--unit) * 0.1);
+  gap: 3px;
+  padding: 3px 6px;
+  border-radius: 23px;
   background: rgba(8, 8, 8, 0.55);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   color: #f2f1ec;
-  font: 500 calc(var(--unit) * 0.03) / 1 var(--font-body);
+  font: 500 7px / 1 var(--font-body);
   letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
 .remote__badge-dot {
-  width: calc(var(--unit) * 0.016);
-  height: calc(var(--unit) * 0.016);
+  width: 4px;
+  height: 4px;
   flex: none;
   border-radius: 50%;
   background: #ff6a52;
@@ -178,21 +132,21 @@
     box-shadow: 0 0 0 0 rgba(255, 106, 82, 0.45);
   }
   50% {
-    box-shadow: 0 0 0 calc(var(--unit) * 0.022) rgba(255, 106, 82, 0);
+    box-shadow: 0 0 0 5px rgba(255, 106, 82, 0);
   }
 }
 
 /* ---------- engraved label strip ---------- */
 
 .remote__plate {
-  padding: 0 calc(var(--unit) * 0.012);
+  padding: 0 3px;
 }
 
 .remote__title {
   overflow: hidden;
   margin: 0;
   color: #eceeea;
-  font: 400 calc(var(--unit) * 0.078) / 1.05 var(--font-display);
+  font: 400 18px / 1.05 var(--font-display);
   letter-spacing: 0.02em;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
   white-space: nowrap;
@@ -209,8 +163,7 @@
   /* top-left top-right bottom-right bottom-left — traces the same
      corners as .key:first-child / .key:last-child below, so the seam
      never shows a squarer curve than the key sitting on top of it. */
-  border-radius: calc(var(--unit) * 0.05) calc(var(--unit) * 0.05)
-    calc(var(--unit) * 0.09) calc(var(--unit) * 0.09);
+  border-radius: 12px 12px 21px 21px;
   background: var(--seam);
   box-shadow:
     inset 0 2px 3px rgba(0, 0, 0, 0.7),
@@ -220,10 +173,10 @@
 .key {
   display: grid;
   place-items: center;
-  height: calc(var(--unit) * 0.16);
+  height: 37px;
   padding: 0;
   border: 0;
-  border-radius: calc(var(--unit) * 0.05);
+  border-radius: 12px;
   background: linear-gradient(180deg, #262626, #181818);
   color: var(--icon);
   cursor: pointer;
@@ -238,22 +191,20 @@
 }
 
 .key:first-child {
-  border-radius: calc(var(--unit) * 0.05) calc(var(--unit) * 0.022)
-    calc(var(--unit) * 0.022) calc(var(--unit) * 0.09);
+  border-radius: 12px 5px 5px 21px;
 }
 
 .key:last-child {
-  border-radius: calc(var(--unit) * 0.022) calc(var(--unit) * 0.05)
-    calc(var(--unit) * 0.09) calc(var(--unit) * 0.022);
+  border-radius: 5px 12px 21px 5px;
 }
 
 .key:nth-child(2) {
-  border-radius: calc(var(--unit) * 0.022);
+  border-radius: 5px;
 }
 
 .key svg {
-  width: calc(var(--unit) * 0.088);
-  height: calc(var(--unit) * 0.088);
+  width: 20px;
+  height: 20px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.7;
@@ -286,7 +237,7 @@
 
 .key--lit svg {
   fill: currentColor;
-  filter: drop-shadow(0 0 calc(var(--unit) * 0.022) rgba(242, 243, 238, 0.35));
+  filter: drop-shadow(0 0 5px rgba(242, 243, 238, 0.35));
 }
 
 .key:focus-visible {

@@ -10,8 +10,8 @@
 
 .ds-top-row {
   display: grid;
-  grid-template-columns: 52px 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: 56px minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
   align-items: start;
 }
 
@@ -19,14 +19,15 @@
 .ds-tools-col {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .ds-tool-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: #1e1e1e;
+  width: 46px;
+  height: 46px;
+  padding: 5px;
+  border-radius: 12px;
+  background: #1b1b1b;
   border: 1px solid #2a2a2a;
   display: flex;
   align-items: center;
@@ -34,6 +35,13 @@
   color: var(--tool-color, #fff);
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
+  box-sizing: border-box;
+}
+
+.ds-tool-btn svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .ds-tool-btn:hover {
@@ -78,6 +86,13 @@
   background: linear-gradient(135deg, #3b82f6, #60a5fa);
   border-radius: 50px;
   box-shadow: 0 4px 18px rgba(59, 130, 246, 0.35);
+}
+
+/* Sits beside the feedback column without making the top row overflow. */
+.ds-title-block .remote {
+  --unit: 230px;
+  margin-top: 30px;
+  margin-left: 15px;
 }
 
 /* ── GITHUB CONTRIBUTION GRAPH ── */
@@ -186,7 +201,7 @@
 
 .floating-field textarea {
   width: 100%;
-  height: 80px;
+  height: 90px;
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #333;
@@ -428,6 +443,8 @@
   border-radius: 12px;
   padding: 14px;
   display: flex;
+  height: 150px;
+  margin-top: 5px;
   flex-direction: column;
   gap: 8px;
   position: relative;
