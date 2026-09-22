@@ -648,4 +648,8 @@
     line-height: 1.45;
     overflow-wrap: anywhere;
   }
+  .media-remote{
+    position: relative;
+    left: 20px; 
+  }
 }

@@ -157,6 +157,14 @@ const FADE_IN_MS = 1500; // ramp up from silence at the start
 const FADE_OUT_MS = 2500; // ramp down to silence at the end
 const TARGET_VOLUME = 70; // full volume once faded in
 
+/* How many clips ahead/behind of the current one to warm the
+   image cache for, so stepping forward/back feels instant. */
+const IMAGE_PRELOAD_RADIUS = 2;
+
+/* Connections at or below this effectiveType, or any connection
+   with saveData on, are treated as "bad" and skip audio entirely. */
+const SLOW_CONNECTION_TYPES = new Set(["slow-2g", "2g", "3g"]);
+
 /* ---------- icons ---------- */
 
 const PlayIcon = () => (
@@ -245,10 +253,54 @@ function fadeVolume(player, { from, to, durationMs, onComplete }) {
   return intervalId;
 }
 
+/* Reads the Network Information API (where supported) and decides
+   whether the connection is good enough to bother with audio.
+   Falls back to "allow audio" on browsers that don't expose it,
+   since we can't tell either way. */
+function isConnectionTooSlowForAudio() {
+  if (typeof navigator === "undefined") return false;
+  const conn =
+    navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (!conn) return false;
+  if (conn.saveData) return true;
+  if (conn.effectiveType && SLOW_CONNECTION_TYPES.has(conn.effectiveType)) return true;
+  return false;
+}
+
+/* Forces the browser to fully fetch AND decode an image ahead of time.
+   Just setting `.src` on a throwaway Image only warms the HTTP cache —
+   the browser still has to decode the bitmap the first time it's
+   actually painted, which is what causes the flash/blackout on the
+   real <img>. `img.decode()` forces that decode to happen now, off
+   the critical path. Cached module-side (by src -> promise) so the
+   same photo is never fetched or decoded twice, and concurrent calls
+   for the same src share one decode instead of racing. */
+const imagePreloadCache = new Map(); // src -> Promise
+
+function preloadImage(src) {
+  if (!src) return Promise.resolve();
+  if (imagePreloadCache.has(src)) return imagePreloadCache.get(src);
+
+  const img = new window.Image();
+  img.src = src;
+
+  const promise = (img.decode ? img.decode() : Promise.resolve())
+    .catch(() => {
+      // decode() can reject (e.g. src changed, unsupported format);
+      // the image is still cached by the browser at this point, so
+      // don't treat this as fatal — just don't block on it.
+    });
+
+  imagePreloadCache.set(src, promise);
+  return promise;
+}
+
 export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
   const [clipIndex, setClipIndex] = useState(0);
   const [photoIndex, setPhotoIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [audioAllowed, setAudioAllowed] = useState(true);
+  const [decodedSrcs, setDecodedSrcs] = useState(() => new Set());
   const current = clips[clipIndex];
 
   const ytMountRef = useRef(null); // hidden div YT.Player attaches to
@@ -299,6 +351,51 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
     bind();
   }, []);
 
+  // Check connection quality once on mount, and again if the browser
+  // reports a change (e.g. wifi -> cellular handoff mid-session).
+  useEffect(() => {
+    setAudioAllowed(!isConnectionTooSlowForAudio());
+
+    const conn =
+      navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (!conn?.addEventListener) return undefined;
+
+    const handleChange = () => setAudioAllowed(!isConnectionTooSlowForAudio());
+    conn.addEventListener("change", handleChange);
+    return () => conn.removeEventListener("change", handleChange);
+  }, []);
+
+  // Preload + fully decode photos for the current clip plus a few clips
+  // ahead/behind, so stepping through with the remote feels instant.
+  // Decoding is async, so we mark each src "ready" as its decode
+  // resolves rather than assuming preloadImage() finished synchronously.
+  useEffect(() => {
+    const total = clips.length;
+    if (!total) return undefined;
+    let cancelled = false;
+
+    for (let offset = -IMAGE_PRELOAD_RADIUS; offset <= IMAGE_PRELOAD_RADIUS; offset++) {
+      const idx = ((clipIndex + offset) % total + total) % total;
+      getPhotos(clips[idx]).forEach((photo) => {
+        if (!photo.src) return;
+        preloadImage(photo.src).then(() => {
+          if (cancelled) return;
+          setDecodedSrcs((prev) => {
+            if (prev.has(photo.src)) return prev;
+            const next = new Set(prev);
+            next.add(photo.src);
+            return next;
+          });
+        });
+      });
+    }
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clipIndex, clips]);
+
   // Slideshow autoplay while "playing".
   useEffect(() => {
     if (!playing || photoCount < 2) return undefined;
@@ -307,8 +404,10 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playing, clipIndex, photoIndex, photoCount]);
 
-  // Create the (hidden) YT.Player instance once on mount.
+  // Create the (hidden) YT.Player instance once on mount — skipped
+  // entirely on a bad connection so we never even load the API.
   useEffect(() => {
+    if (!audioAllowed) return undefined;
     let cancelled = false;
 
     loadYouTubeApi().then((YT) => {
@@ -331,11 +430,12 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
       ytPlayerRef.current = null;
       ytReadyRef.current = false;
     };
-  }, []);
+  }, [audioAllowed]);
 
   // Drive the YouTube player off `playing` + `clipIndex`, with a
   // volume fade-in at the start and fade-out right before it stops.
   useEffect(() => {
+    if (!audioAllowed) return undefined;
     const track = current?.audio;
 
     const clearAllTimers = () => {
@@ -404,7 +504,7 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
 
     return clearAllTimers;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playing, clipIndex]);
+  }, [playing, clipIndex, audioAllowed]);
 
   return (
     <div
@@ -412,8 +512,22 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
       role="group"
       aria-label={current ? `Player: ${current.title}` : "Player"}
     >
-      {/* Hidden YouTube player — only used as an audio source. */}
-      <div ref={ytMountRef} style={{ position: "absolute", width: 1, height: 1, overflow: "hidden" }} />
+      {/* Hidden YouTube player — only used as an audio source.
+          Not mounted at all when the connection is deemed too slow. */}
+      {audioAllowed && (
+        <div
+          ref={ytMountRef}
+          style={{
+            position: "fixed",
+            top: -9999,
+            left: -9999,
+            width: 1,
+            height: 1,
+            overflow: "hidden",
+            pointerEvents: "none",
+          }}
+        />
+      )}
 
       <div className="remote__face">
         <div className="remote__screen">
@@ -424,6 +538,12 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
               src={currentPhoto.src}
               alt={currentPhoto.alt ?? current.alt ?? ""}
               draggable="false"
+              decoding="async"
+              // Once a src has gone through preloadImage()'s decode(),
+              // the browser's image cache already holds a decoded
+              // bitmap for it, so remounting here (for the animation
+              // below) doesn't force a re-decode or cause a flash.
+              data-preloaded={decodedSrcs.has(currentPhoto.src) || undefined}
             />
           ) : (
             <p className="remote__empty">Load a photo to start</p>

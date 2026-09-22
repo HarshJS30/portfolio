@@ -73,10 +73,25 @@ const SURELM = {
 const FALLBACK_MUSIC = {
   title: "Fox on the Run",
   artist: "Sweet",
-  cover: "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+  cover: "/music.png",
   url: null,
   nowplaying: false,
 };
+
+// Last.fm doesn't leave the image field empty when a track has no
+// artwork — it returns a real URL to ITS OWN blank placeholder graphic
+// (a grey/white square, always containing this hash). A plain `|| `
+// chain treats that URL as valid art since it's truthy, so we have to
+// check for it explicitly to fall back to our local cover instead.
+const LASTFM_NO_ART_HASH = "2a96cbd8b46e442fc41c2b86b821562f";
+
+function resolveCover(track) {
+  const candidate = track.image?.[3]?.["#text"] || track.image?.[2]?.["#text"];
+  if (!candidate || candidate.includes(LASTFM_NO_ART_HASH)) {
+    return FALLBACK_MUSIC.cover;
+  }
+  return candidate;
+}
 
 function getLast91Days() {
   const days = [];
@@ -134,17 +149,14 @@ export default function DailyStack() {
       .then((r) => r.json())
       .then((data) => {
         const track = data.recenttracks.track[0];
-        const img =
-          track.image[3]["#text"] ||
-          track.image[2]["#text"] ||
-          FALLBACK_MUSIC.cover;
+        const img = resolveCover(track);
 
         const nowplaying = !!track["@attr"]?.nowplaying;
 
         setMusic({
           title: track.name,
           artist: track.artist["#text"],
-          cover: img || FALLBACK_MUSIC.cover,
+          cover: img,
           url: track.url,
           nowplaying,
         });
@@ -246,7 +258,9 @@ export default function DailyStack() {
           <p className="ds-tool-label">Tool</p>
           <p className="ds-stack">STACK.</p>
           <div className="ds-pill" />
-          <MediaRemote />
+          <div className="media-remote">
+            <MediaRemote />
+          </div>
         </div>
 
         {/* GitHub + Contact */}
