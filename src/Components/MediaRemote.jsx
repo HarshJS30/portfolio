@@ -157,9 +157,9 @@ const FADE_IN_MS = 1500; // ramp up from silence at the start
 const FADE_OUT_MS = 2500; // ramp down to silence at the end
 const TARGET_VOLUME = 70; // full volume once faded in
 
-/* How many clips ahead/behind of the current one to warm the
-   image cache for, so stepping forward/back feels instant. */
-const IMAGE_PRELOAD_RADIUS = 2;
+/* Keep the next few frames ready without downloading every frame in
+   several neighboring shows (which can compete with the music stream). */
+const IMAGE_PRELOAD_AHEAD = 3;
 
 /* Connections at or below this effectiveType, or any connection
    with saveData on, are treated as "bad" and skip audio entirely. */
@@ -300,7 +300,9 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
   const [photoIndex, setPhotoIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [audioAllowed, setAudioAllowed] = useState(true);
+  const [ytReady, setYtReady] = useState(false);
   const [decodedSrcs, setDecodedSrcs] = useState(() => new Set());
+  const [visiblePhoto, setVisiblePhoto] = useState(null);
   const current = clips[clipIndex];
 
   const ytMountRef = useRef(null); // hidden div YT.Player attaches to
@@ -325,7 +327,19 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
 
   const photos = getPhotos(current);
   const currentPhoto = photos[photoIndex];
+  const screenPhoto = visiblePhoto || currentPhoto;
   const photoCount = clips.reduce((total, clip) => total + getPhotos(clip).length, 0);
+
+  // Keep the last painted frame in place until the newly selected frame
+  // has decoded, avoiding a black gap during fast navigation.
+  useEffect(() => {
+    if (!currentPhoto?.src) return;
+    let cancelled = false;
+    preloadImage(currentPhoto.src).then(() => {
+      if (!cancelled) setVisiblePhoto(currentPhoto);
+    });
+    return () => { cancelled = true; };
+  }, [currentPhoto?.src]);
 
   const selectPhoto = (nextClipIndex, nextPhotoIndex) => {
     setClipIndex(nextClipIndex);
@@ -365,36 +379,50 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
     return () => conn.removeEventListener("change", handleChange);
   }, []);
 
-  // Preload + fully decode photos for the current clip plus a few clips
-  // ahead/behind, so stepping through with the remote feels instant.
-  // Decoding is async, so we mark each src "ready" as its decode
-  // resolves rather than assuming preloadImage() finished synchronously.
+  // Preload the current frame and the next four frames in remote order.
+  // Work serially so a large image burst cannot starve YouTube audio.
   useEffect(() => {
-    const total = clips.length;
-    if (!total) return undefined;
+    const sequence = clips.flatMap((clip) => getPhotos(clip));
+    if (!sequence.length) return undefined;
     let cancelled = false;
+    let idleHandle;
+    let timeoutHandle;
 
-    for (let offset = -IMAGE_PRELOAD_RADIUS; offset <= IMAGE_PRELOAD_RADIUS; offset++) {
-      const idx = ((clipIndex + offset) % total + total) % total;
-      getPhotos(clips[idx]).forEach((photo) => {
-        if (!photo.src) return;
-        preloadImage(photo.src).then(() => {
-          if (cancelled) return;
-          setDecodedSrcs((prev) => {
-            if (prev.has(photo.src)) return prev;
-            const next = new Set(prev);
-            next.add(photo.src);
-            return next;
-          });
+    const currentOffset = clips.slice(0, clipIndex).reduce((n, clip) => n + getPhotos(clip).length, 0) + photoIndex;
+    const warmFrames = Array.from({ length: Math.min(IMAGE_PRELOAD_AHEAD + 1, sequence.length) }, (_, i) =>
+      sequence[(currentOffset + i) % sequence.length]
+    );
+    const warm = async () => {
+      for (const photo of warmFrames) {
+        if (!photo?.src) continue;
+        await preloadImage(photo.src);
+        if (cancelled) return;
+        setDecodedSrcs((prev) => {
+          if (prev.has(photo.src)) return prev;
+          const next = new Set(prev);
+          next.add(photo.src);
+          return next;
         });
-      });
+      }
+    };
+    const startWarming = () => {
+      if (!cancelled) warm();
+    };
+    // Start warming after the current interaction/render has settled, so
+    // playback and visible content keep the browser's immediate bandwidth.
+    if (typeof window.requestIdleCallback === "function") {
+      idleHandle = window.requestIdleCallback(startWarming, { timeout: 1500 });
+    } else {
+      timeoutHandle = window.setTimeout(startWarming, 250);
     }
 
     return () => {
       cancelled = true;
+      if (idleHandle != null) window.cancelIdleCallback?.(idleHandle);
+      if (timeoutHandle != null) window.clearTimeout(timeoutHandle);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clipIndex, clips]);
+  }, [clipIndex, photoIndex, clips]);
 
   // Slideshow autoplay while "playing".
   useEffect(() => {
@@ -419,6 +447,7 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
         events: {
           onReady: () => {
             ytReadyRef.current = true;
+            setYtReady(true);
           },
         },
       });
@@ -429,6 +458,7 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
       ytPlayerRef.current?.destroy?.();
       ytPlayerRef.current = null;
       ytReadyRef.current = false;
+      setYtReady(false);
     };
   }, [audioAllowed]);
 
@@ -504,7 +534,7 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
 
     return clearAllTimers;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playing, clipIndex, audioAllowed]);
+  }, [playing, clipIndex, audioAllowed, ytReady]);
 
   return (
     <div
@@ -531,19 +561,19 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
 
       <div className="remote__face">
         <div className="remote__screen">
-          {currentPhoto ? (
+          {screenPhoto ? (
             <img
               className="remote__art"
-              key={currentPhoto.src}
-              src={currentPhoto.src}
-              alt={currentPhoto.alt ?? current.alt ?? ""}
+              key={screenPhoto.src}
+              src={screenPhoto.src}
+              alt={screenPhoto.alt ?? current.alt ?? ""}
               draggable="false"
               decoding="async"
               // Once a src has gone through preloadImage()'s decode(),
               // the browser's image cache already holds a decoded
               // bitmap for it, so remounting here (for the animation
               // below) doesn't force a re-decode or cause a flash.
-              data-preloaded={decodedSrcs.has(currentPhoto.src) || undefined}
+              data-preloaded={decodedSrcs.has(screenPhoto.src) || undefined}
             />
           ) : (
             <p className="remote__empty">Load a photo to start</p>
