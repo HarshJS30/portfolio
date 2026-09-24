@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Television, BoxingGlove, SoccerBall } from "@phosphor-icons/react";
 import "../css/Herocard.css";
 import img from "../assets/collage.png";
 
@@ -43,8 +44,7 @@ export default function HeroCard() {
   const handleMouseLeave = () => {
     if (!imageRef.current) return;
     imageRef.current.style.setProperty("--tilt", `0deg`);
-  }; 
-
+  };
 
   return (
     <div className="hero-card" style={{ animationDelay: "0.1s" }}>
@@ -73,7 +73,24 @@ export default function HeroCard() {
             </strong> .
         </p>
         <p className="hero-card__desc">
-          Hello, I'm Harsh, a 21 year old developer based in India. I write occasionaly, you can find them at <a data-cuelume-hover="tick" href="https://nottharsh.bearblog.dev/blog/" target="_blank" rel="noopener noreferrer">my blog.</a><span className="blog-arrow">↗</span><br /> Other than tech, I spend my time watching amazing shows and sports.
+          Hello, I'm Harsh, a 22-year-old developer based in India. I write occasionally, you can find them at <a data-cuelume-hover="tick" href="https://nottharsh.bearblog.dev/blog/" target="_blank" rel="noopener noreferrer">my blog.</a><span className="blog-arrow">↗</span><br />
+          Away from the keyboard, I'm usually watching{" "}
+          <span className="fav fav--tv">
+            TV shows
+            <Television weight="duotone" className="fav__icon" aria-hidden="true" />
+          </span>
+          ,{" "}
+          <span className="fav fav--ufc">
+            UFC
+            <BoxingGlove weight="duotone" className="fav__icon" aria-hidden="true" />
+          </span>{" "}
+          or{" "}
+          {/* swap SoccerBall for Cricket (also from @phosphor-icons/react) and the word for "cricket" if you prefer */}
+          <span className="fav fav--ball">
+            football
+            <SoccerBall weight="duotone" className="fav__icon" aria-hidden="true" />
+          </span>
+          .
         </p>
       </div>
 
