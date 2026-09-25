@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Television, BoxingGlove, SoccerBall } from "@phosphor-icons/react";
 import "../css/Herocard.css";
 import img from "../assets/collage.png";
+import img1 from '../assets/cover.png';
 
 export default function HeroCard() {
   const [time, setTime] = useState(new Date());
@@ -51,7 +52,7 @@ export default function HeroCard() {
       <div className="hero-card__top">
         <div className="hero-card__profile">
           <div className="hero-card__avatar">
-            <div className="hero-card__avatar-inner">H</div>
+            <div className="hero-card__avatar-inner"><img src={img1}></img></div>
           </div>
           <div>
             <p className="hero-card__name">Harsh.</p>
