@@ -66,11 +66,10 @@ import sp6 from "../assets/webshows/sopranos06.png"
 const DEMO_CLIPS = [
   {
     title: "Six Feet Under, 2001-2005",
-    watching: true,
     src: [sfe6, sfe2, sfe1, sfe3, sfe5, sfe4],
     audio: {
-      youtubeId: "YHRvDo8rUoQ",
-      startTime: 115, 
+      youtubeId: "ghPcYqn0p4Y",
+      startTime: 40, 
       duration: 20,
     },
   },
