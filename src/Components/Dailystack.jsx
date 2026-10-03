@@ -1,6 +1,6 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import "../css/Tools.css";
-import { motion } from "motion/react";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import MediaRemote from "./MediaRemote";
 import { VisualStudioCode } from "../icons/VisualStudioCode";
 import { GitHub } from "../icons/Github";
@@ -117,6 +117,18 @@ function getContributionColor(count) {
 
 // ── COMPONENT ──────────────────────────────────────────────────
 export default function DailyStack() {
+  const tiltX = useSpring(useMotionValue(0), {
+    stiffness: 210,
+    damping: 18,
+    mass: 0.65,
+  });
+  const tiltY = useSpring(useMotionValue(0), {
+    stiffness: 210,
+    damping: 18,
+    mass: 0.65,
+  });
+  const prefersReducedMotion = useReducedMotion();
+
   const [music, setMusic] = useState(FALLBACK_MUSIC);
   const [contributions, setContributions] = useState({});
   const [totalContribs, setTotalContribs] = useState(0);
@@ -221,6 +233,22 @@ export default function DailyStack() {
   const handleMusicClick = () => {
     const query = encodeURIComponent(`${music.title} ${music.artist}`);
     window.open(`https://music.youtube.com/search?q=${query}`, "_blank");
+  };
+
+  const handleBuildingPointerMove = (event) => {
+    if (prefersReducedMotion || event.pointerType === "touch") return;
+
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+    tiltX.set(y * -20);
+    tiltY.set(x * 20);
+  };
+
+  const resetBuildingTilt = () => {
+    tiltX.set(0);
+    tiltY.set(0);
   };
 
   const days = getLast91Days();
@@ -383,7 +411,16 @@ export default function DailyStack() {
         </button>
 
         {/* SureLM — Currently Building */}
-        <div className="ds-building">
+        <motion.div
+          className="ds-building"
+          onPointerMove={handleBuildingPointerMove}
+          onPointerLeave={resetBuildingTilt}
+          style={{
+            rotateX: tiltX,
+            rotateY: tiltY,
+            transformPerspective: 700,
+          }}
+        >
           <div className="ds-building-header">
             <span className="ds-building-badge">
               <span className="ds-building-dot" />
@@ -401,7 +438,7 @@ export default function DailyStack() {
               </span>
             ))}
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </div>

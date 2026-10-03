@@ -31,6 +31,8 @@
 }
 
 .links-panel__btn {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   aspect-ratio: 1;
   background: #1e1e1e;
@@ -41,13 +43,43 @@
   justify-content: center;
   color: var(--link-color, #fff);
   text-decoration: none;
-  transition: background 0.2s, transform 0.15s, border-color 0.2s;
+  transition: transform 0.15s, border-color 0.25s;
+}
+
+.links-panel__btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  transform: translate(
+    var(--social-fill-x, 0),
+    var(--social-fill-y, 101%)
+  );
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.links-panel__btn:hover::before {
+  transform: translate(0, 0);
+}
+
+.links-panel__btn svg {
+  position: relative;
+  z-index: 1;
+  transition: color 0.25s;
 }
 
 .links-panel__btn:hover {
-  background: #252525;
-  border-color: #444;
+  border-color: #fff;
+  color: var(--link-hover-color, #111);
   transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .links-panel__btn,
+  .links-panel__btn::before,
+  .links-panel__btn svg {
+    transition: none;
+  }
 }
 
 /* Project card */

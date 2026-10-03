@@ -438,86 +438,118 @@
 
 /* ── SURELM — CURRENTLY BUILDING ── */
 .ds-building {
-  background: #0f1a0f;
-  border: 1px solid #1a2e1a;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(167, 139, 250, 0.15), transparent 48%),
+    radial-gradient(ellipse at 0% 100%, rgba(74, 222, 128, 0.11), transparent 50%),
+    #151518;
+  border: 1px solid #34323b;
   border-radius: 12px;
-  padding: 14px;
+  padding: 20px 16px 15px;
   display: flex;
-  height: 150px;
+  min-height: 150px;
   margin-top: 5px;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
+  transform-style: preserve-3d;
+  will-change: transform;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 0 22px rgba(167, 139, 250, 0.055);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.ds-building:hover {
+  border-color: rgba(167, 139, 250, 0.52);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.28),
+    0 0 26px rgba(167, 139, 250, 0.12),
+    0 0 22px rgba(74, 222, 128, 0.06);
 }
 
 .ds-building::before {
   content: "";
   position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(74, 222, 128, 0.08), transparent 70%);
+  inset: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.035);
+  border-radius: 8px;
   pointer-events: none;
 }
 
 .ds-building-header {
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .ds-building-badge {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
   font-size: 0.65rem;
-  color: #4ade80;
+  color: #b7a4ff;
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .ds-building-dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 6px #4ade80;
+  background: #6ee7a8;
+  box-shadow: 0 0 9px rgba(110, 231, 168, 0.7);
   animation: pulse 2s infinite;
 }
 
 .ds-building-name {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.6rem;
-  color: #fff;
-  letter-spacing: 0.04em;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #f0edff;
+  letter-spacing: -0.04em;
   line-height: 1;
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
 }
 
 .ds-building-desc {
-  font-size: 0.72rem;
-  color: #666;
-  line-height: 1.5;
+  font-size: 0.78rem;
+  color: #96969f;
+  line-height: 1.4;
   font-family: 'DM Sans', sans-serif;
+  position: relative;
+  z-index: 1;
 }
 
 .ds-building-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 2px;
+  gap: 6px;
+  margin-top: 3px;
+  position: relative;
+  z-index: 1;
 }
 
 .ds-building-tag {
-  background: #162316;
-  border: 1px solid #1e3a1e;
-  color: #4ade80;
-  font-size: 0.65rem;
-  padding: 2px 8px;
-  border-radius: 4px;
+  background: rgba(167, 139, 250, 0.09);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  color: #c8baff;
+  font-size: 0.62rem;
+  padding: 3px 7px;
+  border-radius: 5px;
   font-family: 'JetBrains Mono', monospace;
+}
+
+.ds-building-tag:nth-child(even) {
+  background: rgba(110, 231, 168, 0.07);
+  border-color: rgba(110, 231, 168, 0.18);
+  color: #9ce9bd;
 }
 /* ── LATEST BLOG POST ── */
 .ds-blog {
@@ -636,11 +668,11 @@
   }
 
   .ds-building {
-    padding: 12px;
+    padding: 16px 13px 13px;
   }
 
   .ds-building-name {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
   }
 
   .ds-building-desc {
