@@ -64,7 +64,6 @@ a{
   font-family: 'DM Sans', sans-serif;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   transition: border-color 0.2s, color 0.2s;
   cursor: default;
 }
@@ -75,13 +74,20 @@ a{
 }
 
 .tech-stack__tag-icon {
-  width: 14px;
+  width: 0;
   height: 14px;
-  flex: 0 0 14px;
+  flex: 0 0 0;
+  margin-right: 0;
   color: #fff;
-  transition: color 0.2s;
+  opacity: 0;
+  overflow: hidden;
+  transition: width 0.2s, flex-basis 0.2s, margin-right 0.2s, opacity 0.2s, color 0.2s;
 }
 
 .tech-stack__tag:hover .tech-stack__tag-icon {
+  width: 14px;
+  flex-basis: 14px;
+  margin-right: 6px;
   color: var(--tech-color, #fff);
+  opacity: 1;
 }
