@@ -304,7 +304,7 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
   const [visiblePhoto, setVisiblePhoto] = useState(null);
   const current = clips[clipIndex];
 
-  const ytMountRef = useRef(null); // hidden div YT.Player attaches to
+  const ytContainerRef = useRef(null); // React-owned wrapper for the external player
   const ytPlayerRef = useRef(null); // the YT.Player instance
   const ytReadyRef = useRef(false);
   const stopTimerRef = useRef(null);
@@ -438,8 +438,14 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
     let cancelled = false;
 
     loadYouTubeApi().then((YT) => {
-      if (cancelled || !ytMountRef.current || ytPlayerRef.current) return;
-      ytPlayerRef.current = new YT.Player(ytMountRef.current, {
+      if (cancelled || !ytContainerRef.current || ytPlayerRef.current) return;
+
+      // The YouTube IFrame API replaces its target element with an iframe.
+      // Give it an imperative child inside a React-owned wrapper so React
+      // never tries to remove the replaced placeholder during an update.
+      const playerMount = document.createElement("div");
+      ytContainerRef.current.appendChild(playerMount);
+      ytPlayerRef.current = new YT.Player(playerMount, {
         height: "1",
         width: "1",
         playerVars: { controls: 0, disablekb: 1, modestbranding: 1 },
@@ -545,7 +551,7 @@ export default function MediaRemote({ clips = DEMO_CLIPS, onChange }) {
           Not mounted at all when the connection is deemed too slow. */}
       {audioAllowed && (
         <div
-          ref={ytMountRef}
+          ref={ytContainerRef}
           style={{
             position: "fixed",
             top: -9999,
