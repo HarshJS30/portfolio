@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
 }
 
 .ds-top-row {
@@ -629,19 +630,34 @@
   }
 
   .ds-top-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 12px;
   }
 
   .ds-tools-col {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .ds-tool-btn {
-    width: 40px;
-    height: 40px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    min-width: 0;
+    padding: 4px;
+  }
+
+  .ds-top-row > *,
+  .ds-bottom-row > * {
+    min-width: 0;
+  }
+
+  .ds-github-column,
+  .ds-contact-form,
+  .ds-bottom-row {
+    min-width: 0;
+    width: 100%;
   }
 
   .ds-github {
@@ -658,9 +674,16 @@
   }
 
   .ds-player {
-    padding: 9px 35px;
-    margin-left: 10px;
-    width: 95%;
+    padding: 9px 12px;
+    margin: 0;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ds-player-play {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
   }
 
   .ds-player-speaker {
@@ -682,6 +705,11 @@
   }
   .media-remote{
     position: relative;
-    left: 20px; 
+    left: 0;
+    align-self: center;
+  }
+
+  .ds-title-block .remote {
+    margin-left: 0;
   }
 }
